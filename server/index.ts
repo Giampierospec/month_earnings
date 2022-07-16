@@ -1,14 +1,16 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
-import router from './routes'
-const cookieSession = require('cookie-session')
-
+import router from './src/routes'
+require('ts-node/register')
 dotenv.config()
+import './src/db/connection'
+const cookieSession = require('cookie-session')
 
 const app = express()
 
 const port = process.env.PORT
+
 app.use(
 	cookieSession({
 		keys: [process.env.SECRET],
