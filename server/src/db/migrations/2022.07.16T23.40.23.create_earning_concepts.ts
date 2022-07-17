@@ -1,7 +1,8 @@
+import { DataTypes } from 'sequelize'
 import { Migration } from '../connection'
-import { DataTypes, Sequelize } from 'sequelize'
+
 export const up: Migration = ({ context: queryInterface }) =>
-	queryInterface.createTable('users', {
+	queryInterface.createTable('earning_concepts', {
 		id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
@@ -9,29 +10,24 @@ export const up: Migration = ({ context: queryInterface }) =>
 			autoIncrement: true,
 			autoIncrementIdentity: true,
 		},
-		firstName: {
+		concept: {
 			type: DataTypes.STRING,
-			allowNull: false,
 		},
-		lastName: {
-			type: DataTypes.STRING,
-			allowNull: false,
+		amount: {
+			type: DataTypes.DOUBLE,
 		},
-		email: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
-		password: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
-		jsonwebtoken: {
-			type: DataTypes.STRING,
+		earnings_id: {
+			type: DataTypes.INTEGER,
+			references: { key: 'id', model: 'earnings' },
 		},
 		created_at: {
 			type: DataTypes.DATE,
 			defaultValue: new Date(),
 		},
+		updated_at: {
+			type: DataTypes.DATE,
+			defaultValue: new Date(),
+		},
 	})
 export const down: Migration = ({ context: queryInterface }) =>
-	queryInterface.dropTable('users')
+	queryInterface.dropTable('earning_concepts')

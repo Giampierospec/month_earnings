@@ -1,9 +1,9 @@
 import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../db/connection'
+import Earnings from './Earnings'
 
-class User extends Model {}
-
-User.init(
+const User = sequelize.define(
+	'User',
 	{
 		firstName: {
 			type: DataTypes.STRING,
@@ -28,11 +28,18 @@ User.init(
 			type: DataTypes.DATE,
 			defaultValue: new Date(),
 		},
+		roleId: {
+			type: DataTypes.INTEGER,
+		},
 	},
 	{
-		sequelize,
-		modelName: 'User',
+		tableName: 'users',
+		timestamps: false,
 	}
 )
+User.hasMany(Earnings, {
+	foreignKey: 'userId',
+})
+Earnings.belongsTo(User)
 
 export default User

@@ -20,3 +20,7 @@ export const umzug = new Umzug({
 
 // export the type helper exposed by umzug, which will have the `context` argument typed correctly
 export type Migration = typeof umzug._types.migration
+
+import '../models'
+
+import '../utils/db_init'

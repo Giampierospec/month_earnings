@@ -2,9 +2,14 @@ import express from 'express'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import router from './src/routes'
+import cors from 'cors'
 require('ts-node/register')
-dotenv.config()
+if (process.env.NODE_ENV !== 'production') {
+	dotenv.config()
+}
+
 import './src/db/connection'
+
 const cookieSession = require('cookie-session')
 
 const app = express()
@@ -17,6 +22,7 @@ app.use(
 		maxAge: 24 * 60 * 60 * 1000,
 	})
 )
+app.use(cors())
 app.use(bodyParser.json())
 
 app.use('/api', router)
