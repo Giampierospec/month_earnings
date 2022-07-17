@@ -29,6 +29,4 @@ const EarningConcepts = sequelize.define(
 	}
 )
 
-// EarningConcepts.belongsTo(Earnings)
-
 export default EarningConcepts
