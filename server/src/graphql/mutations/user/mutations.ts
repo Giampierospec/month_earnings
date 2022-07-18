@@ -10,8 +10,16 @@ export const userMutations = {
 			input: { type: new graphql.GraphQLNonNull(loginInput) },
 		},
 		description: 'Logins the user',
-		resolve: async (_: any, args: any, req: any) => {
-			return await login(args.input)
+		resolve: async (_: any, args: any, context: any) => {
+			console.log('auth', context.isAuth)
+			const loginResponse = await login(args.input)
+			context.res.setHeader(
+				'Set-Cookie',
+				`Earning-Auth-Token=${loginResponse.token}`
+			)
+			// req.response.setCookie('x-auth-token', loginResponse.token)
+
+			return loginResponse
 		},
 	},
 }

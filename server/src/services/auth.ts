@@ -1,6 +1,7 @@
 import User from '../models/User'
 import { comparePassword } from '../utils/password'
 import jwt from 'jsonwebtoken'
+import { ModifiedRequest } from '../middleware/auth'
 
 interface LoginArgs {
 	email: string
@@ -32,5 +33,11 @@ export const login = async ({ email, password }: LoginArgs) => {
 		}
 	} catch (error) {
 		throw error
+	}
+}
+
+export const checkIfLoggedIn = (req: ModifiedRequest) => {
+	if (!req.isAuth) {
+		throw new Error('Unauthenticated')
 	}
 }
