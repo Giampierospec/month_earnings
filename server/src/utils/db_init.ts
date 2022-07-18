@@ -1,7 +1,5 @@
-import { sequelize } from '../db/connection'
 import Roles from '../models/Roles'
 import User from '../models/User'
-import { genPassword } from './password'
 ;(async () => {
 	if (!(await Roles.count())) {
 		console.log('Im getting here')
@@ -22,7 +20,7 @@ import { genPassword } from './password'
 			firstName: 'Admin',
 			lastName: 'Admin',
 			email: 'admin@example.com',
-			password: await genPassword('Letmein@1'),
+			password: 'Letmein@1',
 			roleId: 1,
 		})
 	}

@@ -2,13 +2,13 @@ import express from 'express'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import router from './src/routes'
+import { graphqlHTTP } from 'express-graphql'
+import { schema } from './src/graphql/schema'
 import cors from 'cors'
-require('ts-node/register')
-if (process.env.NODE_ENV !== 'production') {
-	dotenv.config()
-}
-
 import './src/db/connection'
+import { isLoggedIn } from './src/middleware/auth'
+
+dotenv.config()
 
 const cookieSession = require('cookie-session')
 
@@ -24,8 +24,14 @@ app.use(
 )
 app.use(cors())
 app.use(bodyParser.json())
-
-app.use('/api', router)
+app.use(isLoggedIn)
+app.use(
+	'/graphql',
+	graphqlHTTP({
+		schema: schema,
+		graphiql: true,
+	})
+)
 
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}`)

@@ -2,8 +2,8 @@ import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../db/connection'
 import EarningConcepts from './EarningConcepts'
 
-const Earnings = sequelize.define(
-	'Earnings',
+class Earnings extends Model {}
+Earnings.init(
 	{
 		id: {
 			type: DataTypes.INTEGER,
@@ -44,13 +44,9 @@ const Earnings = sequelize.define(
 		},
 	},
 	{
+		sequelize,
 		tableName: 'earnings',
 		timestamps: false,
 	}
 )
-
-Earnings.hasMany(EarningConcepts, {
-	foreignKey: 'earnings_id',
-})
-EarningConcepts.belongsTo(Earnings)
 export default Earnings

@@ -2,8 +2,9 @@ import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../db/connection'
 import Earnings from './Earnings'
 
-const EarningConcepts = sequelize.define(
-	'EarningConcepts',
+class EarningConcepts extends Model {}
+
+EarningConcepts.init(
 	{
 		concept: {
 			type: DataTypes.STRING,
@@ -24,6 +25,7 @@ const EarningConcepts = sequelize.define(
 		},
 	},
 	{
+		sequelize,
 		timestamps: false,
 		tableName: 'earning_concepts',
 	}

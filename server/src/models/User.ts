@@ -1,9 +1,8 @@
 import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../db/connection'
-import Earnings from './Earnings'
-
-const User = sequelize.define(
-	'User',
+import { genPassword } from '../utils/password'
+class User extends Model {}
+User.init(
 	{
 		firstName: {
 			type: DataTypes.STRING,
@@ -33,13 +32,20 @@ const User = sequelize.define(
 		},
 	},
 	{
+		sequelize,
+		scopes: {
+			serializeScope: {
+				attributes: {
+					exclude: ['password'],
+				},
+			},
+		},
 		tableName: 'users',
 		timestamps: false,
 	}
 )
-User.hasMany(Earnings, {
-	foreignKey: 'userId',
+User.beforeCreate(async (user: any) => {
+	user.password = await genPassword(user.password)
 })
-Earnings.belongsTo(User)
 
 export default User

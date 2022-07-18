@@ -1,6 +1,8 @@
 import path from 'path'
 import { Sequelize } from 'sequelize'
 import { Umzug, SequelizeStorage } from 'umzug'
+import dotenv from 'dotenv'
+dotenv.config()
 export const sequelize = new Sequelize(
 	process.env.DB_NAME || '',
 	process.env.DB_USERNAME || '',
@@ -20,7 +22,5 @@ export const umzug = new Umzug({
 
 // export the type helper exposed by umzug, which will have the `context` argument typed correctly
 export type Migration = typeof umzug._types.migration
-
-import '../models'
 
 import '../utils/db_init'

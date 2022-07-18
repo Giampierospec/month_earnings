@@ -1,22 +1,18 @@
 import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../db/connection'
-import User from './User'
 
-const Roles = sequelize.define(
-	'Roles',
+class Roles extends Model {}
+Roles.init(
 	{
 		role: {
 			type: DataTypes.STRING,
 		},
 	},
 	{
+		sequelize,
 		timestamps: false,
 		tableName: 'roles',
 	}
 )
-Roles.hasMany(User, {
-	foreignKey: 'roleId',
-})
-User.belongsTo(Roles)
 
 export default Roles
