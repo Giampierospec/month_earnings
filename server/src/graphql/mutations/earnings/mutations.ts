@@ -1,8 +1,20 @@
 import { checkIfLoggedIn } from '../../../services/auth'
-import { EarningsGroupType, EarningsType } from '../../queries/earnings/types'
-import { AddToEarningGroupInput, CreateEarningInput } from './types'
+import {
+	EarningsGroupType,
+	EarningsGroupTypeReduced,
+	EarningsType,
+} from '../../queries/earnings/types'
+import {
+	AddToEarningGroupInput,
+	CreateEarningGroupInput,
+	CreateEarningInput,
+} from './types'
 import * as graphql from 'graphql'
-import { addToEarningGroup, createEarning } from '../../../services/earnings'
+import {
+	addToEarningGroup,
+	createEarning,
+	createEarningGroup,
+} from '../../../services/earnings'
 
 export const earningsMutations = {
 	createEarning: {
@@ -15,6 +27,17 @@ export const earningsMutations = {
 			checkIfLoggedIn(context)
 			const input = args.input
 			return await createEarning({ ...input, userId: context.userId })
+		},
+	},
+	createEarningGroup: {
+		type: EarningsGroupTypeReduced,
+		description: 'Add new Earning Group',
+		args: {
+			input: { type: new graphql.GraphQLNonNull(CreateEarningGroupInput) },
+		},
+		resolve: async (_: any, args: any, context: any) => {
+			checkIfLoggedIn(context)
+			return await createEarningGroup({ ...args.input, userId: context.userId })
 		},
 	},
 	addEarningToGroup: {

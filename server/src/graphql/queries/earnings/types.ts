@@ -1,6 +1,7 @@
 import * as graphql from 'graphql'
 import { resolve } from 'path'
 import EarningConcepts from '../../../models/EarningConcepts'
+import EarningGroup from '../../../models/EarningGroup'
 import Earnings from '../../../models/Earnings'
 import User from '../../../models/User'
 import { userType } from '../users/types'
@@ -28,6 +29,13 @@ export const EarningConceptsType = new graphql.GraphQLObjectType({
 		},
 	},
 })
+export const EarningsGroupTypeReduced = new graphql.GraphQLObjectType({
+	name: 'EarningsGroupTypeReduced',
+	fields: {
+		id: { type: graphql.GraphQLInt },
+		name: { type: graphql.GraphQLString },
+	},
+})
 export const EarningsType = new graphql.GraphQLObjectType({
 	name: 'Earnings',
 	fields: {
@@ -52,12 +60,25 @@ export const EarningsType = new graphql.GraphQLObjectType({
 		userId: {
 			type: graphql.GraphQLInt,
 		},
+		earning_group_id: {
+			type: graphql.GraphQLInt,
+		},
 		concepts: {
 			type: new graphql.GraphQLList(EarningConceptsType),
 			resolve: async (obj) => {
 				return await EarningConcepts.findAll({
 					where: {
 						earnings_id: obj.id,
+					},
+				})
+			},
+		},
+		earningGroup: {
+			type: EarningsGroupTypeReduced,
+			resolve: async (obj) => {
+				return await EarningGroup.findOne({
+					where: {
+						id: obj.earning_group_id,
 					},
 				})
 			},

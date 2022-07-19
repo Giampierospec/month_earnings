@@ -28,6 +28,12 @@ export const AddToEarningGroupInput = new graphql.GraphQLInputObjectType({
 		},
 	},
 })
+export const CreateEarningGroupInput = new graphql.GraphQLInputObjectType({
+	name: 'CreateEarningGroupInput',
+	fields: {
+		name: { type: graphql.GraphQLString },
+	},
+})
 export const CreateEarningInput = new graphql.GraphQLInputObjectType({
 	name: 'CreateEarningInput',
 	fields: {
@@ -41,6 +47,9 @@ export const CreateEarningInput = new graphql.GraphQLInputObjectType({
 			type: graphql.GraphQLString,
 		},
 		year: {
+			type: graphql.GraphQLInt,
+		},
+		earning_group_id: {
 			type: graphql.GraphQLInt,
 		},
 		concepts: {

@@ -26,4 +26,11 @@ export const userMutations = {
 			})
 		},
 	},
+	logout: {
+		type: userType,
+		description: 'Logs out the user',
+		resolve: (_: any, args: any, context: any) => {
+			context.res.clearCookie('Earning-Auth-Token')
+		},
+	},
 }

@@ -65,30 +65,57 @@ export const createEarning = async ({
 	return earning
 }
 
-export const getEarnings = async (userId: number): Promise<Earnings[]> => {
+export const getEarnings = async (
+	userId: number,
+	earningGroupId: number
+): Promise<Earnings[]> => {
 	return await Earnings.findAll({
 		where: {
-			userId,
+			[Op.and]: [{ userId, earning_group_id: earningGroupId }],
 		},
 	})
 }
-
+export const getEarningGroups = async (userId: number) => {
+	return EarningGroup.findAll({
+		where: { userId },
+	})
+}
+interface CreateEarningGroupProps {
+	name: string
+	userId: number
+}
+export const createEarningGroup = async ({
+	name,
+	userId,
+}: CreateEarningGroupProps) => {
+	const exists = await EarningGroup.count({
+		where: {
+			[Op.and]: [{ name, userId }],
+		},
+	})
+	if (exists) {
+		throw new Error(
+			`There is already an earning group with name ${name} for this user`
+		)
+	}
+	return await EarningGroup.create({
+		name: name.trim(),
+		userId,
+	})
+}
 export const addToEarningGroup = async ({
 	name,
 	userId,
 	earnings,
 }: IAddToEarningGroup) => {
-	let earningGroup = (await EarningGroup.findOne({
+	const earningGroup = (await EarningGroup.findOne({
 		where: {
 			[Op.and]: [{ name, userId }],
 		},
 	})) as any
-	console.log('earningGroup', earningGroup.id)
+
 	if (!earningGroup) {
-		earningGroup = await EarningGroup.create({
-			name,
-			userId,
-		})
+		throw new Error(`No earning group found with name ${name}`)
 	}
 	const resultEarnings = await Earnings.findAll({
 		where: {
@@ -102,6 +129,5 @@ export const addToEarningGroup = async ({
 	return {
 		id: earningGroup.id,
 		name: earningGroup.name,
-		// earnings: [...earningResults],
 	}
 }
