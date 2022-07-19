@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import LoginCard from '../components/LoginCard'
+import Login from '../modules/Login'
 
 const RouteSetup: React.FC = () => {
   return (
     <Routes>
-      <Route path="/login" element={<LoginCard />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   )
 }

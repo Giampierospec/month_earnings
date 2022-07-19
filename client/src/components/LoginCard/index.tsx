@@ -5,6 +5,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Text,
   VStack,
 } from '@chakra-ui/react'
 import { Field, Form, Formik } from 'formik'
@@ -12,16 +13,18 @@ import React from 'react'
 import { useEffect } from 'react'
 import { me } from '../../graphql/queries/me'
 import PrimaryButton from '../PrimaryButton'
+import * as Yup from 'yup'
 
 interface CardProps {
+  error: string
   submit: (values: FormProps) => void
 }
-interface FormProps {
+export interface FormProps {
   email: string
   password: string
 }
 
-const LoginCard: React.FC<Partial<CardProps>> = ({ submit }) => {
+const LoginCard: React.FC<Partial<CardProps>> = ({ submit, error }) => {
   const handleSubmit = (values: FormProps) => {
     if (submit) {
       submit(values)
@@ -30,6 +33,12 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit }) => {
   useEffect(() => {
     me()
   }, [])
+  const loginSchema = Yup.object().shape({
+    email: Yup.string()
+      .required('Email is required')
+      .email('Need to introduce correct format for email'),
+    password: Yup.string().required('Password is required'),
+  })
   return (
     <Flex w="100%" alignItems="center" justifyContent="center">
       <Flex
@@ -43,6 +52,11 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit }) => {
         borderRadius="lg"
         border="1px solid #CCC"
       >
+        {error && (
+          <Text fontSize={{ base: '16px' }} color="red">
+            {error}
+          </Text>
+        )}
         <Heading
           textTransform="uppercase"
           fontSize={{ base: '20px', lg: '36px' }}
@@ -61,6 +75,7 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit }) => {
         <Formik
           enableReinitialize
           onSubmit={handleSubmit}
+          validationSchema={loginSchema}
           initialValues={
             {
               email: '',
@@ -68,12 +83,18 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit }) => {
             } as FormProps
           }
         >
-          {() => (
+          {({ touched, errors }) => (
             <Form>
               <VStack spacing={4} minW={{ base: 'auto', md: '350px' }}>
                 <FormControl flexGrow={1}>
                   <FormLabel htmlFor="email">Email</FormLabel>
-                  <Field as={Input} id="email" name="email" type="email" />
+                  <Field
+                    as={Input}
+                    id="email"
+                    name="email"
+                    type="email"
+                    isInvalid={touched.email && errors.email}
+                  />
                 </FormControl>
                 <FormControl>
                   <FormLabel htmlFor="password">Password</FormLabel>
@@ -82,6 +103,7 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit }) => {
                     id="password"
                     name="password"
                     type="password"
+                    isInvalid={touched.password && errors.password}
                   />
                 </FormControl>
                 <PrimaryButton type="submit" alignSelf="flex-start">

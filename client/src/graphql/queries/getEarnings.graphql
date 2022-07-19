@@ -1,0 +1,16 @@
+query GetEarnings($earningGroupId: Int!) {
+  getEarnings(earningGroupId: $earningGroupId) {
+    id
+    currency
+    month_earnings
+    spent_in_month
+    earningGroup {
+      id
+      name
+    }
+    concepts {
+      concept
+      amount
+    }
+  }
+}

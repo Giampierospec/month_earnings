@@ -1,17 +1,23 @@
 import { ApolloProvider } from '@apollo/client'
 import * as ReactDOM from 'react-dom/client'
-import { App } from './App'
+import { Provider } from 'react-redux'
+import { applyMiddleware, createStore } from 'redux'
+import thunk from 'redux-thunk'
+import App from './App'
+import reducers from './reducers'
 import { client } from './services/apolloClient'
 import * as serviceWorker from './serviceWorker'
 
 const container = document.getElementById('root')
 if (!container) throw new Error('Failed to find the root element')
 const root = ReactDOM.createRoot(container)
-
+const store = createStore(reducers, {}, applyMiddleware(thunk))
 root.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>
+  <Provider store={store}>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </Provider>
 )
 
 // If you want your app to work offline and load faster, you can change

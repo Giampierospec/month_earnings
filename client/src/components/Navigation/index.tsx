@@ -1,8 +1,11 @@
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Box, Flex, Heading, HStack } from '@chakra-ui/react'
+import _ from 'lodash'
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Reducers } from '../../interfaces/general'
 
-const Navigation: React.FC = () => {
+const Navigation: React.FC<Partial<Reducers>> = ({ auth }) => {
   return (
     <Box>
       <Flex
@@ -18,9 +21,12 @@ const Navigation: React.FC = () => {
         <Heading fontSize="45px">
           <Link to="/">Earnings</Link>
         </Heading>
+        <HStack spacing={4}>
+          {_.isEmpty(auth.user) && <Link to="/login">Login</Link>}
+        </HStack>
       </Flex>
     </Box>
   )
 }
-
-export default Navigation
+const mapStateToProps = ({ auth }) => ({ auth })
+export default connect(mapStateToProps)(Navigation)

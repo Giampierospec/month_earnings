@@ -1,0 +1,12 @@
+query GetEarningGroups {
+  getEarningGroups {
+    id
+    name
+    earnings {
+      id
+      month
+      year
+      spent_in_month
+    }
+  }
+}
