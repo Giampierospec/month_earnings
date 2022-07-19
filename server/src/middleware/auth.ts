@@ -10,7 +10,7 @@ export const isLoggedIn = (
 	res: Response,
 	next: NextFunction
 ) => {
-	const authToken = req.get('Authorization')
+	const authToken = req.cookies['Earning-Auth-Token']
 	if (!authToken) {
 		req.isAuth = false
 		return next()
@@ -18,7 +18,6 @@ export const isLoggedIn = (
 	const token = authToken.split(' ').pop()
 	let verify: any
 	try {
-		console.log('secret', process.env.JWT_SECRET)
 		verify = jwt.verify(token || '', process.env.JWT_SECRET || '')
 	} catch (error) {
 		req.isAuth = false

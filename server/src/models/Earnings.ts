@@ -31,6 +31,9 @@ Earnings.init(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		earning_group_id: {
+			type: DataTypes.INTEGER,
+		},
 		userId: {
 			type: DataTypes.INTEGER,
 		},

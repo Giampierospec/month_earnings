@@ -1,13 +1,4 @@
 import * as graphql from 'graphql'
-export const userType = new graphql.GraphQLObjectType({
-	name: 'User',
-	description: 'User Type Object',
-	fields: {
-		id: { type: graphql.GraphQLInt },
-		name: { type: graphql.GraphQLString },
-		email: { type: graphql.GraphQLString },
-	},
-})
 
 export const loginResponse = new graphql.GraphQLObjectType({
 	name: 'LoginResponse',

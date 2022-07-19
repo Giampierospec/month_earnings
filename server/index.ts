@@ -7,6 +7,8 @@ import { schema } from './src/graphql/schema'
 import cors from 'cors'
 import './src/db/connection'
 import { isLoggedIn } from './src/middleware/auth'
+import cookieParser from 'cookie-parser'
+import expressPlayground from 'graphql-playground-middleware-express'
 
 dotenv.config()
 
@@ -22,6 +24,7 @@ app.use(
 		maxAge: 24 * 60 * 60 * 1000,
 	})
 )
+app.use(cookieParser())
 app.use(cors())
 app.use(bodyParser.json())
 app.use(isLoggedIn)
@@ -32,7 +35,15 @@ app.use(
 		graphiql: true,
 	})
 )
-
+app.get(
+	'/graphql-playground',
+	expressPlayground({
+		endpoint: '/graphql',
+		settings: {
+			'request.credentials': 'same-origin',
+		},
+	})
+)
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}`)
 })

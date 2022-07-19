@@ -25,7 +25,10 @@ export const login = async ({ email, password }: LoginArgs) => {
 	try {
 		const token = jwt.sign(
 			{ id: user.id, email: user.email },
-			process.env.JWT_SECRET || ''
+			process.env.JWT_SECRET || '',
+			{
+				expiresIn: '1d',
+			}
 		)
 		return {
 			token,
@@ -39,5 +42,10 @@ export const login = async ({ email, password }: LoginArgs) => {
 export const checkIfLoggedIn = (req: ModifiedRequest) => {
 	if (!req.isAuth) {
 		throw new Error('Unauthenticated')
+	}
+}
+export const checkIfAlreadyloggedIn = (req: ModifiedRequest) => {
+	if (req.isAuth) {
+		throw new Error('Already logged in')
 	}
 }
