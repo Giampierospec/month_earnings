@@ -10,6 +10,8 @@ const PrimaryButton: React.FC<ButtonProps> = (props) => {
       _hover={{
         bg: 'secondary',
       }}
+      borderRadius={0}
+      py="20px"
       minW="50px"
       minH="40px"
       {...props}
