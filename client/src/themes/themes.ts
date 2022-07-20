@@ -5,7 +5,7 @@ const breakpoints = {
   lg: '1024px',
   xl: '1440px',
 }
-const fonts = { body: 'Open Sans, sans-serif', heading: 'Roboto, sans-serif' }
+const fonts = { body: 'Open Sans, sans-serif', heading: 'Oswald, sans-serif' }
 
 const theme = extendTheme({
   colors: {

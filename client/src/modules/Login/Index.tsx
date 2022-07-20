@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
@@ -10,6 +11,7 @@ import { errorsConvert } from '../../utils/helpers'
 const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
   const navigate = useNavigate()
   const [error, setError] = useState('')
+  const toast = useToast()
   useEffect(() => {
     console.log('user', auth.user)
     if (!_.isEmpty(auth.user)) {
@@ -27,8 +29,14 @@ const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
       if (auth.error) {
         setError(errorsConvert(auth.error))
       }
+      toast({
+        title: 'Login successful',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
     } catch (error) {
-      setError(errorsConvert(auth.error))
+      setError(errorsConvert(error))
     }
   }
   return <LoginCard submit={handleSubmit} error={error} />

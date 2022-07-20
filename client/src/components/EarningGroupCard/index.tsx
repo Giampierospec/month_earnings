@@ -47,9 +47,11 @@ const EarningGroupCard: React.FC<EarningsGroupType> = ({
                 Details
               </Badge>
             </Link>
-            <Badge bg="aquamarine" p="5px 10px">
-              Add Earning
-            </Badge>
+            <Link to={`/create-earning/${id}`}>
+              <Badge bg="aquamarine" p="5px 10px">
+                Add Earning
+              </Badge>
+            </Link>
           </HStack>
         </VStack>
       </Flex>
