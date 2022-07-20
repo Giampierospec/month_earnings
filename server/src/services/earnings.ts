@@ -22,7 +22,7 @@ interface EarningInput {
 	userId: number
 }
 interface IAddToEarningGroup {
-	name: string
+	id: number
 	userId: number
 	earnings: { id: number }[]
 }
@@ -39,6 +39,7 @@ export const createEarning = async ({
 		where: {
 			[Op.and]: [{ month }, { year }, { userId }],
 		},
+		order: [['created_at', 'DESC']],
 	})
 	if (exists) {
 		throw new Error(
@@ -78,6 +79,7 @@ export const getEarnings = async (
 export const getEarningGroups = async (userId: number) => {
 	return EarningGroup.findAll({
 		where: { userId },
+		order: [['id', 'DESC']],
 	})
 }
 interface CreateEarningGroupProps {
@@ -90,7 +92,14 @@ export const createEarningGroup = async ({
 }: CreateEarningGroupProps) => {
 	const exists = await EarningGroup.count({
 		where: {
-			[Op.and]: [{ name, userId }],
+			[Op.and]: [
+				{
+					name: {
+						[Op.like]: `%${name.toUpperCase()}%`,
+					},
+					userId,
+				},
+			],
 		},
 	})
 	if (exists) {
@@ -99,23 +108,23 @@ export const createEarningGroup = async ({
 		)
 	}
 	return await EarningGroup.create({
-		name: name.trim(),
+		name: name.trim().toUpperCase(),
 		userId,
 	})
 }
 export const addToEarningGroup = async ({
-	name,
+	id,
 	userId,
 	earnings,
 }: IAddToEarningGroup) => {
 	const earningGroup = (await EarningGroup.findOne({
 		where: {
-			[Op.and]: [{ name, userId }],
+			[Op.and]: [{ id, userId }],
 		},
 	})) as any
 
 	if (!earningGroup) {
-		throw new Error(`No earning group found with name ${name}`)
+		throw new Error(`No earning group found with id ${id}`)
 	}
 	const resultEarnings = await Earnings.findAll({
 		where: {

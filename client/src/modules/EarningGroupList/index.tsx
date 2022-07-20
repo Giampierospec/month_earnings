@@ -1,30 +1,19 @@
 import { Flex, useToast, VStack } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getEarningGroupsByUser } from '../../actions'
 import EarningGroupCard from '../../components/EarningGroupCard'
 import PrimaryButton from '../../components/PrimaryButton'
-import { Actions, Reducers } from '../../interfaces/general'
+import { EarningsGroupType } from '../../generated/graphql'
+import { getEarningsGroup } from '../../graphql/queries/getEarningsGroups'
 import { errorsConvert } from '../../utils/helpers'
 
-const EarningGroupList: React.FC<Partial<Reducers & Actions>> = ({
-  group,
-  getEarningGroupsByUser,
-}) => {
+const EarningGroupList: React.FC = () => {
   const toast = useToast()
+  const [earningGroups, setEarningGroups] = useState<EarningsGroupType[]>([])
   const getEarningGroup = async () => {
     try {
-      await getEarningGroupsByUser()
-      if (group.error) {
-        toast({
-          title: 'An error has occurred',
-          description: errorsConvert(group.error),
-          duration: 9000,
-          isClosable: true,
-          status: 'error',
-        })
-      }
+      const groups = await getEarningsGroup()
+      setEarningGroups(groups)
     } catch (error) {
       toast({
         title: 'An error has occurred',
@@ -36,6 +25,7 @@ const EarningGroupList: React.FC<Partial<Reducers & Actions>> = ({
     }
   }
   useEffect(() => {
+    console.log('getting here', earningGroups)
     getEarningGroup()
   }, [])
   return (
@@ -50,14 +40,12 @@ const EarningGroupList: React.FC<Partial<Reducers & Actions>> = ({
         <Link to="/create-group">
           <PrimaryButton>Create new Group</PrimaryButton>
         </Link>
-        {group?.earningGroups?.map((earningGroup, i) => (
+        {earningGroups?.map((earningGroup, i) => (
           <EarningGroupCard key={i} {...earningGroup} />
         ))}
       </VStack>
     </Flex>
   )
 }
-const mapStateToProps = ({ group }) => ({ group })
-export default connect(mapStateToProps, { getEarningGroupsByUser })(
-  EarningGroupList
-)
+
+export default EarningGroupList

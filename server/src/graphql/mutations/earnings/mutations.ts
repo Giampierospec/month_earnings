@@ -1,9 +1,5 @@
 import { checkIfLoggedIn } from '../../../services/auth'
-import {
-	EarningsGroupType,
-	EarningsGroupTypeReduced,
-	EarningsType,
-} from '../../queries/earnings/types'
+import { EarningsGroupType, EarningsType } from '../../queries/earnings/types'
 import {
 	AddToEarningGroupInput,
 	CreateEarningGroupInput,
@@ -30,7 +26,7 @@ export const earningsMutations = {
 		},
 	},
 	createEarningGroup: {
-		type: EarningsGroupTypeReduced,
+		type: EarningsGroupType,
 		description: 'Add new Earning Group',
 		args: {
 			input: { type: new graphql.GraphQLNonNull(CreateEarningGroupInput) },

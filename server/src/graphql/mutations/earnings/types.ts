@@ -22,7 +22,7 @@ export const EarningsInput = new graphql.GraphQLInputObjectType({
 export const AddToEarningGroupInput = new graphql.GraphQLInputObjectType({
 	name: 'AddToEarningGroupInput',
 	fields: {
-		name: { type: graphql.GraphQLString },
+		id: { type: graphql.GraphQLInt },
 		earnings: {
 			type: new graphql.GraphQLNonNull(new graphql.GraphQLList(EarningsInput)),
 		},
