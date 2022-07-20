@@ -1,12 +1,17 @@
 import * as types from '../actions/types'
-const auth = (state = {}, action: any) => {
+import { User } from '../generated/graphql'
+import { ActionError } from '../interfaces/general'
+interface AuthReducerFields extends ActionError {
+  user: User
+}
+const auth = (state = {} as AuthReducerFields, action: any) => {
   switch (action.type) {
     case types.GET_USER:
-      return { ...action.payload }
+      return { ...state, user: action.payload }
     case types.LOGIN_USER:
-      return { ...action.payload }
+      return { ...state, user: action.payload }
     case types.AUTH_ERROR:
-      return { ...action.payload }
+      return { ...state, error: action.payload }
     default:
       return state
   }

@@ -13,7 +13,6 @@ const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
   const [error, setError] = useState('')
   const toast = useToast()
   useEffect(() => {
-    console.log('user', auth.user)
     if (!_.isEmpty(auth.user)) {
       navigate('/', { replace: true })
     }
@@ -28,13 +27,14 @@ const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
       })
       if (auth.error) {
         setError(errorsConvert(auth.error))
+      } else {
+        toast({
+          title: 'Login successful',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
       }
-      toast({
-        title: 'Login successful',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
     } catch (error) {
       setError(errorsConvert(error))
     }

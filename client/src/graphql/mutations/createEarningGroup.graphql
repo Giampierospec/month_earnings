@@ -1,0 +1,12 @@
+mutation CreateEarningGroup($input: CreateEarningGroupInput!) {
+  createEarningGroup(input: $input) {
+    id
+    name
+    earnings {
+      id
+      month
+      year
+      spent_in_month
+    }
+  }
+}

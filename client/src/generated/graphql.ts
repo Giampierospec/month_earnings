@@ -17,7 +17,7 @@ export type Scalars = {
 
 export type AddToEarningGroupInput = {
   earnings: Array<InputMaybe<EarningsInput>>;
-  name?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type ConcepstInputType = {
@@ -94,7 +94,7 @@ export type Mutation = {
   /** Create new earning */
   createEarning?: Maybe<Earnings>;
   /** Add new Earning Group */
-  createEarningGroup?: Maybe<EarningsGroupTypeReduced>;
+  createEarningGroup?: Maybe<EarningsGroupType>;
   /** Logins the user */
   login?: Maybe<User>;
   /** Logs out the user */
@@ -146,6 +146,13 @@ export type User = {
   role?: Maybe<Scalars['String']>;
 };
 
+export type CreateEarningGroupMutationVariables = Exact<{
+  input: CreateEarningGroupInput;
+}>;
+
+
+export type CreateEarningGroupMutation = { __typename?: 'Mutation', createEarningGroup?: { __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: string | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null };
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
@@ -171,6 +178,46 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id?: number | null, firstName?: string | null, lastName?: string | null, email?: string | null, role?: string | null } | null };
 
 
+export const CreateEarningGroupDocument = gql`
+    mutation CreateEarningGroup($input: CreateEarningGroupInput!) {
+  createEarningGroup(input: $input) {
+    id
+    name
+    earnings {
+      id
+      month
+      year
+      spent_in_month
+    }
+  }
+}
+    `;
+export type CreateEarningGroupMutationFn = Apollo.MutationFunction<CreateEarningGroupMutation, CreateEarningGroupMutationVariables>;
+
+/**
+ * __useCreateEarningGroupMutation__
+ *
+ * To run a mutation, you first call `useCreateEarningGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEarningGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createEarningGroupMutation, { data, loading, error }] = useCreateEarningGroupMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateEarningGroupMutation(baseOptions?: Apollo.MutationHookOptions<CreateEarningGroupMutation, CreateEarningGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateEarningGroupMutation, CreateEarningGroupMutationVariables>(CreateEarningGroupDocument, options);
+      }
+export type CreateEarningGroupMutationHookResult = ReturnType<typeof useCreateEarningGroupMutation>;
+export type CreateEarningGroupMutationResult = Apollo.MutationResult<CreateEarningGroupMutation>;
+export type CreateEarningGroupMutationOptions = Apollo.BaseMutationOptions<CreateEarningGroupMutation, CreateEarningGroupMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {
