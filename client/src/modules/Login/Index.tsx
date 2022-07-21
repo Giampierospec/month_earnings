@@ -13,10 +13,10 @@ const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
   const [error, setError] = useState('')
   const toast = useToast()
   useEffect(() => {
-    if (!_.isEmpty(auth.user)) {
+    if (!_.isEmpty(auth)) {
       navigate('/', { replace: true })
     }
-  }, [auth.user])
+  }, [auth])
   const handleSubmit = async (values: FormProps) => {
     setError('')
     try {
@@ -25,18 +25,21 @@ const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
           ...values,
         },
       })
-      if (auth.error) {
-        setError(errorsConvert(auth.error))
-      } else {
-        toast({
-          title: 'Login successful',
-          status: 'success',
-          duration: 9000,
-          isClosable: true,
-        })
-      }
+
+      toast({
+        title: 'Login successful',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
     } catch (error) {
-      setError(errorsConvert(error))
+      toast({
+        title: 'Login Error',
+        status: 'error',
+        description: errorsConvert(error),
+        duration: 9000,
+        isClosable: true,
+      })
     }
   }
   return <LoginCard submit={handleSubmit} error={error} />

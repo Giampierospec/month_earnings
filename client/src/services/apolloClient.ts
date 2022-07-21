@@ -7,4 +7,10 @@ const link = createHttpLink({
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link,
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'all',
+    },
+  },
 })

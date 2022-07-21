@@ -5,21 +5,15 @@ import {
   User,
 } from '../generated/graphql'
 
-interface AuthFields extends ActionError {
-  user: User
-}
-interface EarningGroupFields extends ActionError {
-  earningGroups: EarningsGroupType[]
-}
 export interface Reducers {
-  auth: AuthFields
-  group: EarningGroupFields
+  auth: User
+  earningGroups: EarningsGroupType[]
 }
 export interface Actions {
   getUser: () => Promise<void>
   loginUser: (values: LoginMutationVariables) => Promise<void>
-  getEarningGroupsByUser: () => Promise<void>
-  addNewGroup: (values: CreateEarningGroupMutationVariables) => Promise<void>
+  getAllEarningGroups: (earningGroups: EarningsGroupType[]) => void
+  createNewGroup: (earningGroups: EarningsGroupType) => void
 }
 interface ErrorMessage {
   message

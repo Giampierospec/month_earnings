@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Spinner } from '@chakra-ui/react'
 import theme from './themes/themes'
 import GlobalStyles from './themes/GlobalStyles'
 import Fonts from './themes/Fonts'

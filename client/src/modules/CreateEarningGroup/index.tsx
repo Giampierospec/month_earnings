@@ -1,12 +1,15 @@
 import { useToast } from '@chakra-ui/react'
 import React from 'react'
+import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { createNewGroup } from '../../actions'
 import EarningGroupForm from '../../components/EarningGroupForm'
 import { CreateEarningGroupInput } from '../../generated/graphql'
 import { createEarningGroup } from '../../graphql/mutations/createEarningGroup'
+import { Actions } from '../../interfaces/general'
 import { errorsConvert } from '../../utils/helpers'
 
-const CreateEarningGroup: React.FC = () => {
+const CreateEarningGroup: React.FC<Partial<Actions>> = ({ createNewGroup }) => {
   const toast = useToast()
   const navigate = useNavigate()
 
@@ -15,7 +18,7 @@ const CreateEarningGroup: React.FC = () => {
       const group = await createEarningGroup({
         input: { ...values },
       })
-
+      createNewGroup(group)
       toast({
         title: 'Group created successfully',
         description: `Group: ${group.name}`,
@@ -36,4 +39,4 @@ const CreateEarningGroup: React.FC = () => {
   }
   return <EarningGroupForm submit={handleSubmit} />
 }
-export default CreateEarningGroup
+export default connect(null, { createNewGroup })(CreateEarningGroup)

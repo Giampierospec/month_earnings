@@ -22,7 +22,7 @@ const Navigation: React.FC<Partial<Reducers>> = ({ auth }) => {
           <Link to="/">Earnings</Link>
         </Heading>
         <HStack spacing={4}>
-          {_.isEmpty(auth.user) && <Link to="/login">Login</Link>}
+          {_.isEmpty(auth) && <Link to="/login">Login</Link>}
         </HStack>
       </Flex>
     </Box>

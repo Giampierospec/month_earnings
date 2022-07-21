@@ -1,19 +1,23 @@
 import { Flex, useToast, VStack } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { getAllEarningGroups } from '../../actions'
 import EarningGroupCard from '../../components/EarningGroupCard'
 import PrimaryButton from '../../components/PrimaryButton'
-import { EarningsGroupType } from '../../generated/graphql'
 import { getEarningsGroup } from '../../graphql/queries/getEarningsGroups'
+import { Actions, Reducers } from '../../interfaces/general'
 import { errorsConvert } from '../../utils/helpers'
 
-const EarningGroupList: React.FC = () => {
+const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
+  earningGroups,
+  getAllEarningGroups,
+}) => {
   const toast = useToast()
-  const [earningGroups, setEarningGroups] = useState<EarningsGroupType[]>([])
   const getEarningGroup = async () => {
     try {
       const groups = await getEarningsGroup()
-      setEarningGroups(groups)
+      getAllEarningGroups(groups)
     } catch (error) {
       toast({
         title: 'An error has occurred',
@@ -25,7 +29,6 @@ const EarningGroupList: React.FC = () => {
     }
   }
   useEffect(() => {
-    console.log('getting here', earningGroups)
     getEarningGroup()
   }, [])
   return (
@@ -47,5 +50,8 @@ const EarningGroupList: React.FC = () => {
     </Flex>
   )
 }
+const mapStateToprops = ({ earningGroups }) => ({ earningGroups })
 
-export default EarningGroupList
+export default connect(mapStateToprops, { getAllEarningGroups })(
+  EarningGroupList
+)
