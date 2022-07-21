@@ -1,4 +1,8 @@
-import { EarningsGroupType, LoginMutationVariables } from '../generated/graphql'
+import {
+  Earnings,
+  EarningsGroupType,
+  LoginMutationVariables,
+} from '../generated/graphql'
 import { login } from '../graphql/mutations/login'
 import { me } from '../graphql/queries/me'
 import * as types from './types'
@@ -21,4 +25,13 @@ export const getAllEarningGroups = (earningGroups: EarningsGroupType[]) => ({
 export const createNewGroup = (earningGroups: EarningsGroupType) => ({
   type: types.CREATE_EARNING_GROUP,
   payload: earningGroups,
+})
+
+export const getAllEarnings = (earnings: Earnings[]) => ({
+  type: types.GET_EARNINGS,
+  payload: earnings,
+})
+export const createEarnings = (earnings: Earnings) => ({
+  type: types.CREATE_EARNINGS,
+  payload: earnings,
 })

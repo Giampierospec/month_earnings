@@ -73,7 +73,7 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit, error }) => {
           } as FormProps
         }
       >
-        {({ touched, errors }) => (
+        {({ touched, errors, isSubmitting }) => (
           <Form>
             <VStack spacing={4} minW={{ base: 'auto', md: '350px' }}>
               <FormControl flexGrow={1}>
@@ -96,7 +96,11 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit, error }) => {
                   isInvalid={touched.password && errors.password}
                 />
               </FormControl>
-              <PrimaryButton type="submit" alignSelf="flex-start">
+              <PrimaryButton
+                type="submit"
+                alignSelf="flex-start"
+                isLoading={isSubmitting}
+              >
                 Login
               </PrimaryButton>
             </VStack>

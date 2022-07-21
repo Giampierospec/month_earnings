@@ -32,8 +32,8 @@ export type CreateEarningGroupInput = {
 export type CreateEarningInput = {
   concepts: Array<InputMaybe<ConcepstInputType>>;
   currency?: InputMaybe<CurrencyEnum>;
-  earning_group_id?: InputMaybe<Scalars['Int']>;
-  month?: InputMaybe<Scalars['String']>;
+  earning_group_id: Scalars['Int'];
+  month?: InputMaybe<MonthEnum>;
   month_earnings?: InputMaybe<Scalars['Float']>;
   year?: InputMaybe<Scalars['Int']>;
 };
@@ -58,7 +58,7 @@ export type Earnings = {
   earningGroup?: Maybe<EarningsGroupTypeReduced>;
   earning_group_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
-  month?: Maybe<Scalars['String']>;
+  month?: Maybe<MonthEnum>;
   month_earnings?: Maybe<Scalars['Float']>;
   spent_in_month?: Maybe<Scalars['Float']>;
   user?: Maybe<User>;
@@ -87,6 +87,21 @@ export type LoginInput = {
   email?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
 };
+
+export enum MonthEnum {
+  April = 'April',
+  August = 'August',
+  December = 'December',
+  February = 'February',
+  January = 'January',
+  July = 'July',
+  June = 'June',
+  March = 'March',
+  May = 'May',
+  November = 'November',
+  October = 'October',
+  September = 'September'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -146,12 +161,19 @@ export type User = {
   role?: Maybe<Scalars['String']>;
 };
 
+export type CreateEarningMutationVariables = Exact<{
+  input: CreateEarningInput;
+}>;
+
+
+export type CreateEarningMutation = { __typename?: 'Mutation', createEarning?: { __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, currency?: CurrencyEnum | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupTypeReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null };
+
 export type CreateEarningGroupMutationVariables = Exact<{
   input: CreateEarningGroupInput;
 }>;
 
 
-export type CreateEarningGroupMutation = { __typename?: 'Mutation', createEarningGroup?: { __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: string | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null };
+export type CreateEarningGroupMutation = { __typename?: 'Mutation', createEarningGroup?: { __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -165,12 +187,12 @@ export type GetEarningsQueryVariables = Exact<{
 }>;
 
 
-export type GetEarningsQuery = { __typename?: 'Query', getEarnings?: Array<{ __typename?: 'Earnings', id?: number | null, currency?: CurrencyEnum | null, month_earnings?: number | null, spent_in_month?: number | null, earningGroup?: { __typename?: 'EarningsGroupTypeReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null> | null };
+export type GetEarningsQuery = { __typename?: 'Query', getEarnings?: Array<{ __typename?: 'Earnings', id?: number | null, currency?: CurrencyEnum | null, month?: MonthEnum | null, year?: number | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupTypeReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null> | null };
 
 export type GetEarningGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetEarningGroupsQuery = { __typename?: 'Query', getEarningGroups?: Array<{ __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: string | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null> | null };
+export type GetEarningGroupsQuery = { __typename?: 'Query', getEarningGroups?: Array<{ __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -178,6 +200,52 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id?: number | null, firstName?: string | null, lastName?: string | null, email?: string | null, role?: string | null } | null };
 
 
+export const CreateEarningDocument = gql`
+    mutation CreateEarning($input: CreateEarningInput!) {
+  createEarning(input: $input) {
+    id
+    month
+    currency
+    month_earnings
+    spent_in_month
+    earning_group_id
+    earningGroup {
+      id
+      name
+    }
+    concepts {
+      concept
+      amount
+    }
+  }
+}
+    `;
+export type CreateEarningMutationFn = Apollo.MutationFunction<CreateEarningMutation, CreateEarningMutationVariables>;
+
+/**
+ * __useCreateEarningMutation__
+ *
+ * To run a mutation, you first call `useCreateEarningMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEarningMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createEarningMutation, { data, loading, error }] = useCreateEarningMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateEarningMutation(baseOptions?: Apollo.MutationHookOptions<CreateEarningMutation, CreateEarningMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateEarningMutation, CreateEarningMutationVariables>(CreateEarningDocument, options);
+      }
+export type CreateEarningMutationHookResult = ReturnType<typeof useCreateEarningMutation>;
+export type CreateEarningMutationResult = Apollo.MutationResult<CreateEarningMutation>;
+export type CreateEarningMutationOptions = Apollo.BaseMutationOptions<CreateEarningMutation, CreateEarningMutationVariables>;
 export const CreateEarningGroupDocument = gql`
     mutation CreateEarningGroup($input: CreateEarningGroupInput!) {
   createEarningGroup(input: $input) {
@@ -259,10 +327,16 @@ export const GetEarningsDocument = gql`
   getEarnings(earningGroupId: $earningGroupId) {
     id
     currency
+    month
+    year
     month_earnings
     spent_in_month
+    earning_group_id
     earningGroup {
       id
+      name
+    }
+    earningGroup {
       name
     }
     concepts {

@@ -1,17 +1,14 @@
-query GetEarnings($earningGroupId: Int!) {
-  getEarnings(earningGroupId: $earningGroupId) {
+# Write your query or mutation here
+mutation CreateEarning($input: CreateEarningInput!) {
+  createEarning(input: $input) {
     id
-    currency
     month
-    year
+    currency
     month_earnings
     spent_in_month
     earning_group_id
     earningGroup {
       id
-      name
-    }
-    earningGroup {
       name
     }
     concepts {

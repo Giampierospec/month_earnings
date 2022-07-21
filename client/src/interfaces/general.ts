@@ -1,5 +1,5 @@
 import {
-  CreateEarningGroupMutationVariables,
+  Earnings,
   EarningsGroupType,
   LoginMutationVariables,
   User,
@@ -7,6 +7,7 @@ import {
 
 export interface Reducers {
   auth: User
+  earnings: Earnings[]
   earningGroups: EarningsGroupType[]
 }
 export interface Actions {
@@ -14,6 +15,8 @@ export interface Actions {
   loginUser: (values: LoginMutationVariables) => Promise<void>
   getAllEarningGroups: (earningGroups: EarningsGroupType[]) => void
   createNewGroup: (earningGroups: EarningsGroupType) => void
+  getAllEarnings: (earnings: Earnings[]) => void
+  createEarnings: (earnings: Earnings) => void
 }
 interface ErrorMessage {
   message

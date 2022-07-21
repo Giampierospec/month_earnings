@@ -1,7 +1,7 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, FlexProps } from '@chakra-ui/react'
 import React from 'react'
 
-const Card: React.FC<React.PropsWithChildren> = (props) => {
+const Card: React.FC<React.PropsWithChildren<Partial<FlexProps>>> = (props) => {
   return (
     <Flex w="100%" alignItems="center" justifyContent="center">
       <Flex
@@ -15,6 +15,7 @@ const Card: React.FC<React.PropsWithChildren> = (props) => {
         borderRadius="lg"
         border="1px solid #CCC"
         boxShadow="lg"
+        {...props}
       >
         {props.children}
       </Flex>
