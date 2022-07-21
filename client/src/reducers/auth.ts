@@ -4,7 +4,7 @@ import { User } from '../generated/graphql'
 const auth = (state = {} as User, action: any) => {
   switch (action.type) {
     case types.GET_USER:
-      return { ...action.payload }
+      return action.payload ? { ...action.payload } : null
     case types.LOGIN_USER:
       return { ...action.payload }
     default:

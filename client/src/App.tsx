@@ -8,11 +8,14 @@ import { BrowserRouter } from 'react-router-dom'
 import { useEffect } from 'react'
 import { getUser } from './actions'
 import { connect } from 'react-redux'
-import { Actions } from './interfaces/general'
+import { Actions, Reducers } from './interfaces/general'
+import _ from 'lodash'
 
-const App: React.FC<Partial<Actions>> = (props) => {
+const App: React.FC<Partial<Actions & Reducers>> = (props) => {
   useEffect(() => {
-    props.getUser()
+    if (_.isEmpty(props.auth)) {
+      props.getUser()
+    }
   }, [props])
   return (
     <ChakraProvider resetCSS theme={theme}>
@@ -26,4 +29,5 @@ const App: React.FC<Partial<Actions>> = (props) => {
     </ChakraProvider>
   )
 }
-export default connect(null, { getUser })(App)
+const mapStateToProps = ({ auth }) => ({ auth })
+export default connect(mapStateToProps, { getUser })(App)

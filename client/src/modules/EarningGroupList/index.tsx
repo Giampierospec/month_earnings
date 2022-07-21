@@ -17,7 +17,7 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
   const getEarningGroup = async () => {
     try {
       const groups = await getEarningsGroup()
-      getAllEarningGroups(groups)
+      getAllEarningGroups(groups || [])
     } catch (error) {
       toast({
         title: 'An error has occurred',

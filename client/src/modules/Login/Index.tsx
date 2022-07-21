@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { loginUser } from '../../actions'
 import LoginCard, { FormProps } from '../../components/LoginCard'
 import { Actions, Reducers } from '../../interfaces/general'
@@ -10,11 +10,12 @@ import { errorsConvert } from '../../utils/helpers'
 
 const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [error, setError] = useState('')
   const toast = useToast()
   useEffect(() => {
     if (!_.isEmpty(auth)) {
-      navigate('/', { replace: true })
+      navigate(searchParams.get('returnUrl') || '/', { replace: true })
     }
   }, [auth])
   const handleSubmit = async (values: FormProps) => {
