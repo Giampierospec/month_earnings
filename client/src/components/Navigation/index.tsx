@@ -35,7 +35,10 @@ const Navigation: React.FC<Partial<Reducers & Actions>> = ({
             </Link>
           ) : (
             <>
-              <Text fontFamily="Oswald">{`Hello, ${auth.firstName}`}</Text>
+              <Text
+                fontFamily="Oswald"
+                display={{ base: 'none', md: 'block' }}
+              >{`Hello, ${auth.firstName}`}</Text>
               <Text fontFamily="Oswald" cursor="pointer" onClick={logout}>
                 Logout
               </Text>
