@@ -7,6 +7,8 @@ const auth = (state = {} as User, action: any) => {
       return action.payload ? { ...action.payload } : null
     case types.LOGIN_USER:
       return { ...action.payload }
+    case types.CREATE_USER:
+      return { ...action.payload }
     default:
       return state
   }

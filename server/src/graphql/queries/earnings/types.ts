@@ -15,6 +15,24 @@ export const CurrencyEnum = new graphql.GraphQLEnumType({
 	},
 })
 
+export const MonthEnum = new graphql.GraphQLEnumType({
+	name: 'MonthEnum',
+	values: {
+		January: { value: 'January' },
+		February: { value: 'February' },
+		March: { value: 'March' },
+		April: { value: 'April' },
+		May: { value: 'May' },
+		June: { value: 'June' },
+		July: { value: 'July' },
+		August: { value: 'August' },
+		September: { value: 'September' },
+		October: { value: 'October' },
+		November: { value: 'November' },
+		December: { value: 'December' },
+	},
+})
+
 export const EarningConceptsType = new graphql.GraphQLObjectType({
 	name: 'EarningConcepts',
 	fields: {
@@ -52,7 +70,7 @@ export const EarningsType = new graphql.GraphQLObjectType({
 			type: graphql.GraphQLFloat,
 		},
 		month: {
-			type: graphql.GraphQLString,
+			type: MonthEnum,
 		},
 		year: {
 			type: graphql.GraphQLInt,

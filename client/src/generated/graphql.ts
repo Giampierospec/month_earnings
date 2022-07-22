@@ -38,6 +38,13 @@ export type CreateEarningInput = {
   year?: InputMaybe<Scalars['Int']>;
 };
 
+export type CreateUserInput = {
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+};
+
 export enum CurrencyEnum {
   Dop = 'DOP',
   Eur = 'EUR',
@@ -110,6 +117,8 @@ export type Mutation = {
   createEarning?: Maybe<Earnings>;
   /** Add new Earning Group */
   createEarningGroup?: Maybe<EarningsGroupType>;
+  /** Creates a new user */
+  createUser?: Maybe<User>;
   /** Logins the user */
   login?: Maybe<User>;
   /** Logs out the user */
@@ -129,6 +138,11 @@ export type MutationCreateEarningArgs = {
 
 export type MutationCreateEarningGroupArgs = {
   input: CreateEarningGroupInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
 };
 
 
@@ -174,6 +188,13 @@ export type CreateEarningGroupMutationVariables = Exact<{
 
 
 export type CreateEarningGroupMutation = { __typename?: 'Mutation', createEarningGroup?: { __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null };
+
+export type CreateUserMutationVariables = Exact<{
+  input: CreateUserInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id?: number | null, firstName?: string | null, lastName?: string | null, email?: string | null, role?: string | null } | null };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -286,6 +307,43 @@ export function useCreateEarningGroupMutation(baseOptions?: Apollo.MutationHookO
 export type CreateEarningGroupMutationHookResult = ReturnType<typeof useCreateEarningGroupMutation>;
 export type CreateEarningGroupMutationResult = Apollo.MutationResult<CreateEarningGroupMutation>;
 export type CreateEarningGroupMutationOptions = Apollo.BaseMutationOptions<CreateEarningGroupMutation, CreateEarningGroupMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    firstName
+    lastName
+    email
+    role
+  }
+}
+    `;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {

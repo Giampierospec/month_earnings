@@ -1,8 +1,10 @@
 import {
+  CreateUserMutationVariables,
   Earnings,
   EarningsGroupType,
   LoginMutationVariables,
 } from '../generated/graphql'
+import { createUser } from '../graphql/mutations/createUser'
 import { login } from '../graphql/mutations/login'
 import { me } from '../graphql/queries/me'
 import * as types from './types'
@@ -15,6 +17,12 @@ export const loginUser =
   (variables: LoginMutationVariables) => async (dispatch) => {
     const user = await login(variables)
     dispatch({ type: types.LOGIN_USER, payload: user })
+  }
+
+export const createNewUser =
+  (variables: CreateUserMutationVariables) => async (dispatch) => {
+    const user = await createUser(variables)
+    dispatch({ type: types.CREATE_USER, payload: user })
   }
 
 export const getAllEarningGroups = (earningGroups: EarningsGroupType[]) => ({

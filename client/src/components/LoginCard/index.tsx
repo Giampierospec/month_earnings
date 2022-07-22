@@ -15,18 +15,12 @@ import { me } from '../../graphql/queries/me'
 import PrimaryButton from '../PrimaryButton'
 import * as Yup from 'yup'
 import Card from '../Card'
+import { IFormSubmit } from '../../interfaces/general'
+import { LoginInput } from '../../generated/graphql'
+import { Link } from 'react-router-dom'
 
-interface CardProps {
-  error: string
-  submit: (values: FormProps) => void
-}
-export interface FormProps {
-  email: string
-  password: string
-}
-
-const LoginCard: React.FC<Partial<CardProps>> = ({ submit, error }) => {
-  const handleSubmit = (values: FormProps) => {
+const LoginCard: React.FC<Partial<IFormSubmit<LoginInput>>> = ({ submit }) => {
+  const handleSubmit = (values: LoginInput) => {
     if (submit) {
       return submit(values)
     }
@@ -42,11 +36,6 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit, error }) => {
   })
   return (
     <Card>
-      {error && (
-        <Text fontSize={{ base: '16px' }} color="red">
-          {error}
-        </Text>
-      )}
       <Heading
         textTransform="uppercase"
         fontSize={{ base: '20px', lg: '36px' }}
@@ -70,7 +59,7 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit, error }) => {
           {
             email: '',
             password: '',
-          } as FormProps
+          } as LoginInput
         }
       >
         {({ touched, errors, isSubmitting }) => (
@@ -103,6 +92,11 @@ const LoginCard: React.FC<Partial<CardProps>> = ({ submit, error }) => {
               >
                 Login
               </PrimaryButton>
+
+              <Text fontSize="16px" fontStyle="italic">
+                Don't have an account please{' '}
+                <Link to="/new-user">Click here</Link> to register
+              </Text>
             </VStack>
           </Form>
         )}

@@ -23,10 +23,11 @@ import Card from '../Card'
 import * as Yup from 'yup'
 import { limitKeyPress } from '../../utils/helpers'
 import PrimaryButton from '../PrimaryButton'
-interface FormProps {
-  submit: (values: CreateEarningInput) => void
-}
-const CreateEarningForm: React.FC<Partial<FormProps>> = ({ submit }) => {
+import { IFormSubmit } from '../../interfaces/general'
+
+const CreateEarningForm: React.FC<Partial<IFormSubmit<CreateEarningInput>>> = ({
+  submit,
+}) => {
   const handleSubmit = (values: CreateEarningInput) => {
     if (submit) return submit(values)
   }

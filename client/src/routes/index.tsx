@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import PrivateRoute from '../components/PrivateRoute'
 import CreateEarningGroup from '../modules/CreateEarningGroup'
 import CreateNewEarning from '../modules/CreateNewEarning'
+import CreateNewUser from '../modules/CreateNewUser'
 import EarningGroupList from '../modules/EarningGroupList'
 import EarningsList from '../modules/EarningsList'
 import Login from '../modules/Login'
@@ -20,6 +21,7 @@ const RouteSetup: React.FC = () => {
         />
       </Route>
       <Route path="/login" element={<Login />} />
+      <Route path="/new-user" element={<CreateNewUser />} />
     </Routes>
   )
 }

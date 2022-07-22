@@ -1,5 +1,9 @@
 import * as graphql from 'graphql'
-import { CurrencyEnum, EarningConceptsType } from '../../queries/earnings/types'
+import {
+	CurrencyEnum,
+	EarningConceptsType,
+	MonthEnum,
+} from '../../queries/earnings/types'
 
 const ConceptsInput = new graphql.GraphQLInputObjectType({
 	name: 'ConcepstInputType',
@@ -44,13 +48,13 @@ export const CreateEarningInput = new graphql.GraphQLInputObjectType({
 			type: graphql.GraphQLFloat,
 		},
 		month: {
-			type: graphql.GraphQLString,
+			type: MonthEnum,
 		},
 		year: {
 			type: graphql.GraphQLInt,
 		},
 		earning_group_id: {
-			type: graphql.GraphQLInt,
+			type: new graphql.GraphQLNonNull(graphql.GraphQLInt),
 		},
 		concepts: {
 			type: new graphql.GraphQLNonNull(new graphql.GraphQLList(ConceptsInput)),

@@ -20,6 +20,7 @@ interface EarningInput {
 	year: number
 	concepts: Concept[]
 	userId: number
+	earning_group_id: number
 }
 interface IAddToEarningGroup {
 	id: number
@@ -30,6 +31,7 @@ interface IAddToEarningGroup {
 export const createEarning = async ({
 	currency,
 	month_earnings,
+	earning_group_id,
 	month,
 	year,
 	concepts,
@@ -37,13 +39,13 @@ export const createEarning = async ({
 }: EarningInput): Promise<Earnings> => {
 	const exists = await Earnings.findOne({
 		where: {
-			[Op.and]: [{ month }, { year }, { userId }],
+			[Op.and]: [{ month }, { year }, { userId }, { earning_group_id }],
 		},
 		order: [['created_at', 'DESC']],
 	})
 	if (exists) {
 		throw new Error(
-			`There is already an earning for this user on ${month} and ${year}`
+			`There is already an earning for this user on ${month}/${year} and group #${earning_group_id}`
 		)
 	}
 	const conceptSum = concepts?.map((x) => x.amount).reduce((a, b) => a + b)
@@ -55,6 +57,7 @@ export const createEarning = async ({
 		currency,
 		month_earnings,
 		spent_in_month: conceptSum,
+		earning_group_id,
 		month,
 		year,
 		userId,
@@ -74,6 +77,7 @@ export const getEarnings = async (
 		where: {
 			[Op.and]: [{ userId, earning_group_id: earningGroupId }],
 		},
+		order: [['id', 'DESC']],
 	})
 }
 export const getEarningGroups = async (userId: number) => {

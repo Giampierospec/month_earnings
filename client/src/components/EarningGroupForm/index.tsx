@@ -12,13 +12,11 @@ import { CreateEarningGroupInput } from '../../generated/graphql'
 import * as Yup from 'yup'
 import PrimaryButton from '../PrimaryButton'
 import Card from '../Card'
+import { IFormSubmit } from '../../interfaces/general'
 
-interface EarningGroupFormProps {
-  submit: (values: CreateEarningGroupInput) => void
-}
-const EarningGroupForm: React.FC<Partial<EarningGroupFormProps>> = ({
-  submit,
-}) => {
+const EarningGroupForm: React.FC<
+  Partial<IFormSubmit<CreateEarningGroupInput>>
+> = ({ submit }) => {
   const handleSubmit = (values: CreateEarningGroupInput) => {
     if (submit) {
       return submit(values)
