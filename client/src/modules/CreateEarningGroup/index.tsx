@@ -15,13 +15,11 @@ const CreateEarningGroup: React.FC<Partial<Actions>> = ({ createNewGroup }) => {
 
   const handleSubmit = async (values: CreateEarningGroupInput) => {
     try {
-      const group = await createEarningGroup({
+      await createNewGroup({
         input: { ...values },
       })
-      createNewGroup(group)
       toast({
         title: 'Group created successfully',
-        description: `Group: ${group.name}`,
         status: 'success',
         isClosable: true,
         duration: 9000,

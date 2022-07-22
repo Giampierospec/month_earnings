@@ -1,4 +1,6 @@
 import {
+  CreateEarningGroupMutationVariables,
+  CreateEarningMutationVariables,
   CreateUserMutationVariables,
   Earnings,
   EarningsGroupType,
@@ -15,10 +17,13 @@ export interface Actions {
   getUser: () => Promise<void>
   loginUser: (values: LoginMutationVariables) => Promise<void>
   createNewUser: (values: CreateUserMutationVariables) => Promise<void>
-  getAllEarningGroups: (earningGroups: EarningsGroupType[]) => void
-  createNewGroup: (earningGroups: EarningsGroupType) => void
-  getAllEarnings: (earnings: Earnings[]) => void
-  createEarnings: (earnings: Earnings) => void
+  logoutUser: () => Promise<void>
+  getAllEarningGroups: () => Promise<void>
+  createNewGroup: (
+    earningGroups: CreateEarningGroupMutationVariables
+  ) => Promise<void>
+  getAllEarnings: (earningGroupId: number) => Promise<void>
+  createEarnings: (values: CreateEarningMutationVariables) => Promise<void>
 }
 export interface IFormSubmit<T> {
   submit: (values: T) => void

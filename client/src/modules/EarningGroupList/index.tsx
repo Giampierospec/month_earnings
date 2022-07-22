@@ -1,11 +1,10 @@
-import { Flex, useToast, VStack } from '@chakra-ui/react'
+import { Flex, Text, useToast, VStack } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getAllEarningGroups } from '../../actions'
 import EarningGroupCard from '../../components/EarningGroupCard'
 import PrimaryButton from '../../components/PrimaryButton'
-import { getEarningsGroup } from '../../graphql/queries/getEarningsGroups'
 import { Actions, Reducers } from '../../interfaces/general'
 import { errorsConvert } from '../../utils/helpers'
 
@@ -16,8 +15,7 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
   const toast = useToast()
   const getEarningGroup = async () => {
     try {
-      const groups = await getEarningsGroup()
-      getAllEarningGroups(groups || [])
+      await getAllEarningGroups()
     } catch (error) {
       toast({
         title: 'An error has occurred',
@@ -43,9 +41,13 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
         <Link to="/create-group">
           <PrimaryButton>Create new Group</PrimaryButton>
         </Link>
-        {earningGroups?.map((earningGroup, i) => (
-          <EarningGroupCard key={i} {...earningGroup} />
-        ))}
+        {earningGroups.length > 0 ? (
+          earningGroups?.map((earningGroup, i) => (
+            <EarningGroupCard key={i} {...earningGroup} />
+          ))
+        ) : (
+          <Text>Nothing to show at the moment</Text>
+        )}
       </VStack>
     </Flex>
   )

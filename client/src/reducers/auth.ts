@@ -9,6 +9,8 @@ const auth = (state = {} as User, action: any) => {
       return { ...action.payload }
     case types.CREATE_USER:
       return { ...action.payload }
+    case types.LOGOUT_USER:
+      return action.payload
     default:
       return state
   }

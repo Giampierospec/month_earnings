@@ -41,7 +41,6 @@ export const createEarning = async ({
 		where: {
 			[Op.and]: [{ month }, { year }, { userId }, { earning_group_id }],
 		},
-		order: [['created_at', 'DESC']],
 	})
 	if (exists) {
 		throw new Error(
@@ -77,7 +76,6 @@ export const getEarnings = async (
 		where: {
 			[Op.and]: [{ userId, earning_group_id: earningGroupId }],
 		},
-		order: [['id', 'DESC']],
 	})
 }
 export const getEarningGroups = async (userId: number) => {

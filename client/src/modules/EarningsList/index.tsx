@@ -16,10 +16,7 @@ const EarningList: React.FC<Partial<Actions & Reducers>> = ({
   const toast = useToast()
   const loadEarnings = async () => {
     try {
-      const result = await getEarnings({
-        earningGroupId: parseInt(earningGroupId),
-      })
-      getAllEarnings(result)
+      await getAllEarnings(parseInt(earningGroupId))
     } catch (error) {
       toast({
         title: 'An error has ocurred',

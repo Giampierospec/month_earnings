@@ -95,7 +95,10 @@ const LoginCard: React.FC<Partial<IFormSubmit<LoginInput>>> = ({ submit }) => {
 
               <Text fontSize="16px" fontStyle="italic">
                 Don't have an account please{' '}
-                <Link to="/new-user">Click here</Link> to register
+                <Box as={Link} to="/new-user" textDecoration="underline">
+                  Click here&nbsp;
+                </Box>
+                to register
               </Text>
             </VStack>
           </Form>

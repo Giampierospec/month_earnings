@@ -1,11 +1,18 @@
-import { Box, Flex, Heading, HStack } from '@chakra-ui/react'
+import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/react'
 import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Reducers } from '../../interfaces/general'
+import { logoutUser } from '../../actions'
+import { Actions, Reducers } from '../../interfaces/general'
 
-const Navigation: React.FC<Partial<Reducers>> = ({ auth }) => {
+const Navigation: React.FC<Partial<Reducers & Actions>> = ({
+  auth,
+  logoutUser,
+}) => {
+  const logout = async () => {
+    await logoutUser()
+  }
   return (
     <Box>
       <Flex
@@ -21,12 +28,23 @@ const Navigation: React.FC<Partial<Reducers>> = ({ auth }) => {
         <Heading fontSize="45px">
           <Link to="/">Earnings</Link>
         </Heading>
-        <HStack spacing={4}>
-          {_.isEmpty(auth) && <Link to="/login">Login</Link>}
+        <HStack spacing={4} textTransform="uppercase">
+          {_.isEmpty(auth) ? (
+            <Link to="/login">
+              <Text fontFamily="Oswald">Login</Text>
+            </Link>
+          ) : (
+            <>
+              <Text fontFamily="Oswald">{`Hello, ${auth.firstName}`}</Text>
+              <Text fontFamily="Oswald" cursor="pointer" onClick={logout}>
+                Logout
+              </Text>
+            </>
+          )}
         </HStack>
       </Flex>
     </Box>
   )
 }
 const mapStateToProps = ({ auth }) => ({ auth })
-export default connect(mapStateToProps)(Navigation)
+export default connect(mapStateToProps, { logoutUser })(Navigation)
