@@ -4,7 +4,9 @@ import { checkIfLoggedIn } from '../../../services/auth'
 import { createEarning, createEarningGroup } from '../../../services/earnings'
 export const earningsMutations = gql`
 	type Mutation {
+		"Creates a new earning associated to an Earning Group"
 		createEarning(input: CreateEarningInput!): Earnings @auth
+		"Creates an Earning Group"
 		createEarningGroup(input: CreateEarningGroupInput!): EarningsGroup @auth
 	}
 `

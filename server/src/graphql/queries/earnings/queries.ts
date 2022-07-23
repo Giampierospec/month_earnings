@@ -4,7 +4,9 @@ import { getEarningGroups, getEarnings } from '../../../services/earnings'
 
 export const earningQueries = gql`
 	type Query {
+		"Gets the earnings by earningGroupId"
 		getEarnings(earningGroupId: Int!): [Earnings] @auth
+		"Gets the earnings group with their earnings"
 		getEarningGroups: [EarningsGroup] @auth
 	}
 `

@@ -4,6 +4,7 @@ import User from '../../../models/User'
 
 const user = gql`
 	# User type object
+	"User Type Object"
 	type User {
 		id: Int
 		firstName: String

@@ -6,6 +6,7 @@ const paginateDirective = gql`
 `
 const authDirective = gql`
 	# auth directive
+	"Auth directive checks if user is authenticated"
 	directive @auth(
 		checkIfAlreadyLoggedIn: Boolean! = false
 	) on OBJECT | FIELD_DEFINITION

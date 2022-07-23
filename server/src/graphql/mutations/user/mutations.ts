@@ -18,7 +18,9 @@ import {
 import { generateToken } from '../../../utils/helpers'
 export const userMutations = gql`
 	type Mutation {
+		"Logins the user"
 		login(input: LoginInput!): User @auth(checkIfAlreadyLoggedIn: true)
+		"Creates a new user"
 		createUser(input: CreateUserInput!): User
 		logout: User @auth
 	}

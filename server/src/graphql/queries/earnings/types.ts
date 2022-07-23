@@ -4,6 +4,7 @@ import EarningGroup from '../../../models/EarningGroup'
 import Earnings from '../../../models/Earnings'
 
 const currencyEnum = gql`
+	"Enum for available currencies"
 	enum CurrencyEnum {
 		USD
 		DOP
@@ -11,6 +12,7 @@ const currencyEnum = gql`
 	}
 `
 const monthEnum = gql`
+	"Enum for months"
 	enum MonthEnum {
 		January
 		February
@@ -28,12 +30,14 @@ const monthEnum = gql`
 `
 
 const earningConceptsType = gql`
+	"Earning Concepts associated to an earning"
 	type EarningConcepts {
 		concept: String
 		amount: Float
 	}
 `
 const earningsGroupTypeReduced = gql`
+	"A reduced version of earningsGroup"
 	type EarningsGroupReduced {
 		id: Int
 		name: String
@@ -41,6 +45,7 @@ const earningsGroupTypeReduced = gql`
 `
 const earningsType = gql`
 	# Earnings Type
+	"Earnings Type"
 	type Earnings {
 		id: Int
 		currency: CurrencyEnum
@@ -55,6 +60,7 @@ const earningsType = gql`
 	}
 `
 const earningsGroupType = gql`
+	"Earnings Group Type"
 	type EarningsGroup {
 		id: Int
 		name: String

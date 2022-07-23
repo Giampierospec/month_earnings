@@ -4,7 +4,7 @@ import { checkIfLoggedIn } from '../../../services/auth'
 
 export const userQueries = gql`
 	type Query {
-		# Gets the current user
+		"Gets the current user"
 		me: User @auth
 	}
 `
