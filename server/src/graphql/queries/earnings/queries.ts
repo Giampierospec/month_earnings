@@ -4,17 +4,17 @@ import { getEarningGroups, getEarnings } from '../../../services/earnings'
 
 export const earningQueries = gql`
 	type Query {
-		getEarnings(earningGroupId: Int!): [Earnings]
-		getEarningGroups: [EarningsGroup]
+		getEarnings(earningGroupId: Int!): [Earnings] @auth
+		getEarningGroups: [EarningsGroup] @auth
 	}
 `
 export const earningQueryResolvers = {
 	getEarnings: async (source: any, args: any, context: any) => {
-		checkIfLoggedIn(context.req)
+		// checkIfLoggedIn(context.req)
 		return await getEarnings(context?.req?.userId, args.earningGroupId)
 	},
 	getEarningGroups: async (source: any, args: any, context: any) => {
-		checkIfLoggedIn(context.req)
+		// checkIfLoggedIn(context.req)
 		return await getEarningGroups(context?.req?.userId)
 	},
 }

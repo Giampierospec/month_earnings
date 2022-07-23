@@ -5,12 +5,12 @@ import { checkIfLoggedIn } from '../../../services/auth'
 export const userQueries = gql`
 	type Query {
 		# Gets the current user
-		me: User
+		me: User @auth
 	}
 `
 export const userQueryResolvers = {
 	me: async (_: any, args: any, context: any) => {
-		checkIfLoggedIn(context.req)
+		// checkIfLoggedIn(context.req)
 		return await User.findOne({
 			where: {
 				id: context.req.userId,

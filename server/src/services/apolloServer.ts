@@ -6,6 +6,7 @@ import {
 import { ApolloServer } from 'apollo-server-express'
 import http from 'http'
 import { schemaTransforms } from '../graphql/directives'
+import { authDirective, directivesResolvers } from './directives'
 export const startApolloServer = async (
 	app: any,
 	typeDefs: any,
@@ -13,12 +14,8 @@ export const startApolloServer = async (
 ) => {
 	const httpServer = http.createServer(app)
 	const directivesTransformers = [...schemaTransforms]
-	const schema = makeExecutableSchema({ typeDefs, resolvers })
-	// directivesTransformers.reduce(
-	// 	(schema: any, transformer) => transformer(schema),
-	// 	schema
-	// )
-	// // console.log(sc)
+	let schema = makeExecutableSchema({ typeDefs, resolvers })
+	schema = authDirective(schema)
 	const server = new ApolloServer({
 		schema,
 		cache: 'bounded',

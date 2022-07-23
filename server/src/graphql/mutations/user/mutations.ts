@@ -18,14 +18,14 @@ import {
 import { generateToken } from '../../../utils/helpers'
 export const userMutations = gql`
 	type Mutation {
-		login(input: LoginInput!): User
+		login(input: LoginInput!): User @auth(checkIfAlreadyLoggedIn: true)
 		createUser(input: CreateUserInput!): User
-		logout: User
+		logout: User @auth
 	}
 `
 export const userMutationsResolvers = {
 	login: async (_: any, args: any, context: any) => {
-		checkIfAlreadyloggedIn(context.req)
+		// checkIfAlreadyloggedIn(context.req)
 		const loginResponse = await login(args.input)
 		context.res.setHeader(
 			'Set-Cookie',

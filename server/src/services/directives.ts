@@ -1,15 +1,20 @@
-import { GraphQLSchema } from 'graphql'
+import { defaultFieldResolver, GraphQLSchema } from 'graphql'
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils'
-import { resolve } from 'path'
+import { checkIfAlreadyloggedIn as isLoggedIn, checkIfLoggedIn } from './auth'
 const paginateDirective = async (schema: GraphQLSchema) => {
 	return mapSchema(schema, {
 		[MapperKind.OBJECT_FIELD]: (fieldConfig) => {
-			const paginateDirective = getDirective(schema, fieldConfig, 'paginate')
+			const paginateDirective = getDirective(
+				schema,
+				fieldConfig,
+				'paginate'
+			)?.[0]
 			if (paginateDirective) {
+				const { resolve = defaultFieldResolver } = fieldConfig
 				return {
 					...fieldConfig,
-					resolve: async (source, args, context) => {
-						const result = await resolve(source, args, context)
+					resolve: async (source, args, context, info) => {
+						const result = await resolve(source, args, context, info)
 						if (Array.isArray(result)) {
 							const { first, page } = paginateDirective as any
 							return {
@@ -29,4 +34,28 @@ const paginateDirective = async (schema: GraphQLSchema) => {
 	})
 }
 
-export const directivesResolvers = [paginateDirective]
+export const authDirective = (schema: GraphQLSchema) =>
+	mapSchema(schema, {
+		[MapperKind.OBJECT_FIELD]: (fieldConfig) => {
+			const authDirective = getDirective(schema, fieldConfig, 'auth')?.[0]
+
+			if (authDirective) {
+				const { checkIfAlreadyLoggedIn } = authDirective
+				const { resolve = defaultFieldResolver } = fieldConfig
+				return {
+					...fieldConfig,
+					resolve: async (source, args, context, info) => {
+						if (!checkIfAlreadyLoggedIn) {
+							checkIfLoggedIn(context.req)
+						} else {
+							isLoggedIn(context.req)
+						}
+						return await resolve(source, args, context, info)
+					},
+				}
+			}
+			return fieldConfig
+		},
+	})
+
+export const directivesResolvers = [paginateDirective, authDirective]
