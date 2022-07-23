@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../db/connection'
+import User from './User'
 
 class Roles extends Model {}
 Roles.init(
@@ -14,5 +15,4 @@ Roles.init(
 		tableName: 'roles',
 	}
 )
-
 export default Roles

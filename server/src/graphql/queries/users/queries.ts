@@ -1,20 +1,20 @@
-import * as graphql from 'graphql'
+import { gql } from 'apollo-server-express'
 import User from '../../../models/User'
 import { checkIfLoggedIn } from '../../../services/auth'
-import { userType } from './types'
 
-export const userQueries = {
-	me: {
-		name: 'me',
-		type: userType,
-		description: 'User query',
-		resolve: async (_: any, args: any, context: any) => {
-			checkIfLoggedIn(context)
-			return await User.findOne({
-				where: {
-					id: context.userId,
-				},
-			})
-		},
+export const userQueries = gql`
+	type Query {
+		# Gets the current user
+		me: User
+	}
+`
+export const userQueryResolvers = {
+	me: async (_: any, args: any, context: any) => {
+		checkIfLoggedIn(context.req)
+		return await User.findOne({
+			where: {
+				id: context.req.userId,
+			},
+		})
 	},
 }

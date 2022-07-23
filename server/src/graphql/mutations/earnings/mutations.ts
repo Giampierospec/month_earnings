@@ -1,49 +1,23 @@
+// import { EarningsGroupType, EarningsType } from '../../queries/earnings/types'
+import { gql } from 'apollo-server-express'
 import { checkIfLoggedIn } from '../../../services/auth'
-import { EarningsGroupType, EarningsType } from '../../queries/earnings/types'
-import {
-	AddToEarningGroupInput,
-	CreateEarningGroupInput,
-	CreateEarningInput,
-} from './types'
-import * as graphql from 'graphql'
-import {
-	addToEarningGroup,
-	createEarning,
-	createEarningGroup,
-} from '../../../services/earnings'
-
-export const earningsMutations = {
-	createEarning: {
-		type: EarningsType,
-		description: 'Create new earning',
-		args: {
-			input: { type: new graphql.GraphQLNonNull(CreateEarningInput) },
-		},
-		resolve: async (_: any, args: any, context: any) => {
-			checkIfLoggedIn(context)
-			const input = args.input
-			return await createEarning({ ...input, userId: context.userId })
-		},
+import { createEarning, createEarningGroup } from '../../../services/earnings'
+export const earningsMutations = gql`
+	type Mutation {
+		createEarning(input: CreateEarningInput!): Earnings
+		createEarningGroup(input: CreateEarningGroupInput!): EarningsGroup
+	}
+`
+export const earningMutationsResolvers = {
+	createEarning: async (source: any, args: any, context: any) => {
+		checkIfLoggedIn(context.req)
+		return await createEarning({ ...args.input, userId: context.req.userId })
 	},
-	createEarningGroup: {
-		type: EarningsGroupType,
-		description: 'Add new Earning Group',
-		args: {
-			input: { type: new graphql.GraphQLNonNull(CreateEarningGroupInput) },
-		},
-		resolve: async (_: any, args: any, context: any) => {
-			checkIfLoggedIn(context)
-			return await createEarningGroup({ ...args.input, userId: context.userId })
-		},
-	},
-	addEarningToGroup: {
-		type: EarningsGroupType,
-		args: {
-			input: { type: new graphql.GraphQLNonNull(AddToEarningGroupInput) },
-		},
-		resolve: async (_: any, args: any, context: any) => {
-			checkIfLoggedIn(context)
-			return await addToEarningGroup({ ...args.input, userId: context.userId })
-		},
+	createEarningGroup: async (source: any, args: any, context: any) => {
+		checkIfLoggedIn(context.req)
+		return await createEarningGroup({
+			...args.input,
+			userId: context.req.userId,
+		})
 	},
 }

@@ -2,8 +2,6 @@ import {
   CreateEarningGroupMutationVariables,
   CreateEarningMutationVariables,
   CreateUserMutationVariables,
-  Earnings,
-  EarningsGroupType,
   LoginMutationVariables,
 } from '../generated/graphql'
 import { createEarning } from '../graphql/mutations/createEarning'

@@ -14,6 +14,10 @@ EarningConcepts.init(
 		},
 		earnings_id: {
 			type: DataTypes.INTEGER,
+			references: {
+				model: 'earnings',
+				key: 'id',
+			},
 		},
 		created_at: {
 			type: DataTypes.DATE,

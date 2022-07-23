@@ -1,133 +1,113 @@
-import * as graphql from 'graphql'
-import { resolve } from 'path'
+import { gql } from 'apollo-server-express'
 import EarningConcepts from '../../../models/EarningConcepts'
 import EarningGroup from '../../../models/EarningGroup'
 import Earnings from '../../../models/Earnings'
-import User from '../../../models/User'
-import { userType } from '../users/types'
 
-export const CurrencyEnum = new graphql.GraphQLEnumType({
-	name: 'CurrencyEnum',
-	values: {
-		USD: { value: 'USD' },
-		DOP: { value: 'DOP' },
-		EUR: { value: 'EUR' },
-	},
-})
+const currencyEnum = gql`
+	enum CurrencyEnum {
+		USD
+		DOP
+		EUR
+	}
+`
+const monthEnum = gql`
+	enum MonthEnum {
+		January
+		February
+		March
+		April
+		May
+		June
+		July
+		August
+		September
+		October
+		November
+		December
+	}
+`
 
-export const MonthEnum = new graphql.GraphQLEnumType({
-	name: 'MonthEnum',
-	values: {
-		January: { value: 'January' },
-		February: { value: 'February' },
-		March: { value: 'March' },
-		April: { value: 'April' },
-		May: { value: 'May' },
-		June: { value: 'June' },
-		July: { value: 'July' },
-		August: { value: 'August' },
-		September: { value: 'September' },
-		October: { value: 'October' },
-		November: { value: 'November' },
-		December: { value: 'December' },
-	},
-})
-
-export const EarningConceptsType = new graphql.GraphQLObjectType({
-	name: 'EarningConcepts',
-	fields: {
-		concept: {
-			type: graphql.GraphQLString,
+const earningConceptsType = gql`
+	type EarningConcepts {
+		concept: String
+		amount: Float
+	}
+`
+const earningsGroupTypeReduced = gql`
+	type EarningsGroupReduced {
+		id: Int
+		name: String
+	}
+`
+const earningsType = gql`
+	# Earnings Type
+	type Earnings {
+		id: Int
+		currency: CurrencyEnum
+		month_earnings: Float
+		spent_in_month: Float
+		month: MonthEnum
+		year: Int
+		concepts: [EarningConcepts]
+		earning_group_id: Int
+		earningGroup: EarningsGroupReduced
+		user: User
+	}
+`
+const earningsGroupType = gql`
+	type EarningsGroup {
+		id: Int
+		name: String
+		earnings: [Earnings]
+	}
+`
+export const earningTypesResolvers = {
+	Earnings: {
+		concepts: async (parent: any) => {
+			return await EarningConcepts.findAll({
+				where: { earnings_id: parent.id },
+			})
 		},
-		amount: {
-			type: graphql.GraphQLFloat,
-		},
-		earnings_id: {
-			type: graphql.GraphQLInt,
-		},
-	},
-})
-export const EarningsGroupTypeReduced = new graphql.GraphQLObjectType({
-	name: 'EarningsGroupTypeReduced',
-	fields: {
-		id: { type: graphql.GraphQLInt },
-		name: { type: graphql.GraphQLString },
-	},
-})
-export const EarningsType = new graphql.GraphQLObjectType({
-	name: 'Earnings',
-	fields: {
-		id: {
-			type: graphql.GraphQLInt,
-		},
-		currency: {
-			type: CurrencyEnum,
-		},
-		month_earnings: {
-			type: graphql.GraphQLFloat,
-		},
-		spent_in_month: {
-			type: graphql.GraphQLFloat,
-		},
-		month: {
-			type: MonthEnum,
-		},
-		year: {
-			type: graphql.GraphQLInt,
-		},
-		userId: {
-			type: graphql.GraphQLInt,
-		},
-		earning_group_id: {
-			type: graphql.GraphQLInt,
-		},
-		concepts: {
-			type: new graphql.GraphQLList(EarningConceptsType),
-			resolve: async (obj) => {
-				return await EarningConcepts.findAll({
-					where: {
-						earnings_id: obj.id,
-					},
-				})
-			},
-		},
-		earningGroup: {
-			type: EarningsGroupTypeReduced,
-			resolve: async (obj) => {
-				return await EarningGroup.findOne({
-					where: {
-						id: obj.earning_group_id,
-					},
-				})
-			},
-		},
-		user: {
-			type: userType,
-			resolve: async (obj) => {
-				return await User.findOne({
-					where: {
-						id: obj.userId,
-					},
-				})
-			},
+		earningGroup: async (parent: any) => {
+			return await EarningGroup.findOne({
+				where: { id: parent.earning_group_id },
+			})
 		},
 	},
-})
-
-export const EarningsGroupType = new graphql.GraphQLObjectType({
-	name: 'EarningsGroupType',
-	fields: {
-		id: { type: graphql.GraphQLInt },
-		name: { type: graphql.GraphQLString },
-		earnings: {
-			type: new graphql.GraphQLList(EarningsType),
-			resolve: async (obj) => {
-				return await Earnings.findAll({
-					where: {
-						earning_group_id: obj?.id,
-					},
-				})
-			},
+	CurrencyEnum: {
+		DOP: 'DOP',
+		USD: 'USD',
+		EUR: 'EUR',
+	},
+	MonthEnum: {
+		January: 'January',
+		February: 'February',
+		March: 'March',
+		April: 'April',
+		May: 'May',
+		June: 'June',
+		July: 'July',
+		August: 'August',
+		September: 'September',
+		October: 'October',
+		November: 'November',
+		December: 'December',
+	},
+	EarningsGroup: {
+		earnings: async (parent: any) => {
+			return await Earnings.findAll({
+				where: {
+					earning_group_id: parent.id,
+				},
+			})
 		},
 	},
-})
+}
+export const earningTypeDefinitions = [
+	currencyEnum,
+	monthEnum,
+	earningsType,
+	earningsGroupTypeReduced,
+	earningConceptsType,
+	earningsGroupType,
+]

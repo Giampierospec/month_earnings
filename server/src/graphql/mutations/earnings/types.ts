@@ -1,63 +1,25 @@
-import * as graphql from 'graphql'
-import {
-	CurrencyEnum,
-	EarningConceptsType,
-	MonthEnum,
-} from '../../queries/earnings/types'
+import { gql } from 'apollo-server-express'
 
-const ConceptsInput = new graphql.GraphQLInputObjectType({
-	name: 'ConcepstInputType',
-	fields: {
-		concept: {
-			type: graphql.GraphQLString,
-		},
-		amount: {
-			type: graphql.GraphQLInt,
-		},
-	},
-})
-export const EarningsInput = new graphql.GraphQLInputObjectType({
-	name: 'EarningsInput',
-	fields: {
-		id: { type: graphql.GraphQLInt },
-	},
-})
+const conceptsInput = gql`
+	input ConceptsInputType {
+		concept: String
+		amount: Float
+	}
+`
+const createEarningGroupInput = gql`
+	input CreateEarningGroupInput {
+		name: String
+	}
+`
+const createEarningInput = gql`
+	input CreateEarningInput {
+		currency: CurrencyEnum
+		month_earnings: Float
+		month: MonthEnum
+		year: Int
+		earning_group_id: Int!
+		concepts: [ConceptsInputType]
+	}
+`
 
-export const AddToEarningGroupInput = new graphql.GraphQLInputObjectType({
-	name: 'AddToEarningGroupInput',
-	fields: {
-		id: { type: graphql.GraphQLInt },
-		earnings: {
-			type: new graphql.GraphQLNonNull(new graphql.GraphQLList(EarningsInput)),
-		},
-	},
-})
-export const CreateEarningGroupInput = new graphql.GraphQLInputObjectType({
-	name: 'CreateEarningGroupInput',
-	fields: {
-		name: { type: graphql.GraphQLString },
-	},
-})
-export const CreateEarningInput = new graphql.GraphQLInputObjectType({
-	name: 'CreateEarningInput',
-	fields: {
-		currency: {
-			type: CurrencyEnum,
-		},
-		month_earnings: {
-			type: graphql.GraphQLFloat,
-		},
-		month: {
-			type: MonthEnum,
-		},
-		year: {
-			type: graphql.GraphQLInt,
-		},
-		earning_group_id: {
-			type: new graphql.GraphQLNonNull(graphql.GraphQLInt),
-		},
-		concepts: {
-			type: new graphql.GraphQLNonNull(new graphql.GraphQLList(ConceptsInput)),
-		},
-	},
-})
+export default [conceptsInput, createEarningGroupInput, createEarningInput]

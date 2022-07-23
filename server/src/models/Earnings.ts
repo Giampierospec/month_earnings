@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../db/connection'
 import EarningConcepts from './EarningConcepts'
+import EarningGroup from './EarningGroup'
 
 class Earnings extends Model {}
 Earnings.init(
@@ -46,6 +47,10 @@ Earnings.init(
 		},
 		earning_group_id: {
 			type: DataTypes.INTEGER,
+			references: {
+				model: 'earning_group_id',
+				key: 'id',
+			},
 		},
 		userId: {
 			type: DataTypes.INTEGER,

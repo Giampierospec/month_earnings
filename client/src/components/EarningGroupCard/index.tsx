@@ -1,14 +1,10 @@
-import { Badge, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { Badge, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { EarningsGroupType } from '../../generated/graphql'
+import { EarningsGroup } from '../../generated/graphql'
 import Card from '../Card'
 
-const EarningGroupCard: React.FC<EarningsGroupType> = ({
-  id,
-  name,
-  earnings,
-}) => {
+const EarningGroupCard: React.FC<EarningsGroup> = ({ id, name, earnings }) => {
   return (
     <Card>
       <Heading

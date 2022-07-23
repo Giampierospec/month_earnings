@@ -15,13 +15,8 @@ export type Scalars = {
   Float: number;
 };
 
-export type AddToEarningGroupInput = {
-  earnings: Array<InputMaybe<EarningsInput>>;
-  id?: InputMaybe<Scalars['Int']>;
-};
-
-export type ConcepstInputType = {
-  amount?: InputMaybe<Scalars['Int']>;
+export type ConceptsInputType = {
+  amount?: InputMaybe<Scalars['Float']>;
   concept?: InputMaybe<Scalars['String']>;
 };
 
@@ -30,7 +25,7 @@ export type CreateEarningGroupInput = {
 };
 
 export type CreateEarningInput = {
-  concepts: Array<InputMaybe<ConcepstInputType>>;
+  concepts?: InputMaybe<Array<InputMaybe<ConceptsInputType>>>;
   currency?: InputMaybe<CurrencyEnum>;
   earning_group_id: Scalars['Int'];
   month?: InputMaybe<MonthEnum>;
@@ -55,39 +50,33 @@ export type EarningConcepts = {
   __typename?: 'EarningConcepts';
   amount?: Maybe<Scalars['Float']>;
   concept?: Maybe<Scalars['String']>;
-  earnings_id?: Maybe<Scalars['Int']>;
 };
 
 export type Earnings = {
   __typename?: 'Earnings';
   concepts?: Maybe<Array<Maybe<EarningConcepts>>>;
   currency?: Maybe<CurrencyEnum>;
-  earningGroup?: Maybe<EarningsGroupTypeReduced>;
+  earningGroup?: Maybe<EarningsGroupReduced>;
   earning_group_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   month?: Maybe<MonthEnum>;
   month_earnings?: Maybe<Scalars['Float']>;
   spent_in_month?: Maybe<Scalars['Float']>;
   user?: Maybe<User>;
-  userId?: Maybe<Scalars['Int']>;
   year?: Maybe<Scalars['Int']>;
 };
 
-export type EarningsGroupType = {
-  __typename?: 'EarningsGroupType';
+export type EarningsGroup = {
+  __typename?: 'EarningsGroup';
   earnings?: Maybe<Array<Maybe<Earnings>>>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
 };
 
-export type EarningsGroupTypeReduced = {
-  __typename?: 'EarningsGroupTypeReduced';
+export type EarningsGroupReduced = {
+  __typename?: 'EarningsGroupReduced';
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
-};
-
-export type EarningsInput = {
-  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type LoginInput = {
@@ -112,22 +101,11 @@ export enum MonthEnum {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addEarningToGroup?: Maybe<EarningsGroupType>;
-  /** Create new earning */
   createEarning?: Maybe<Earnings>;
-  /** Add new Earning Group */
-  createEarningGroup?: Maybe<EarningsGroupType>;
-  /** Creates a new user */
+  createEarningGroup?: Maybe<EarningsGroup>;
   createUser?: Maybe<User>;
-  /** Logins the user */
   login?: Maybe<User>;
-  /** Logs out the user */
   logout?: Maybe<User>;
-};
-
-
-export type MutationAddEarningToGroupArgs = {
-  input: AddToEarningGroupInput;
 };
 
 
@@ -152,11 +130,8 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  /** Gets the earningGroups with the earnings */
-  getEarningGroups?: Maybe<Array<Maybe<EarningsGroupType>>>;
-  /** Gets all the earnings associated to an earningGroup */
+  getEarningGroups?: Maybe<Array<Maybe<EarningsGroup>>>;
   getEarnings?: Maybe<Array<Maybe<Earnings>>>;
-  /** User query */
   me?: Maybe<User>;
 };
 
@@ -165,7 +140,6 @@ export type QueryGetEarningsArgs = {
   earningGroupId: Scalars['Int'];
 };
 
-/** User Type Object */
 export type User = {
   __typename?: 'User';
   email?: Maybe<Scalars['String']>;
@@ -180,14 +154,14 @@ export type CreateEarningMutationVariables = Exact<{
 }>;
 
 
-export type CreateEarningMutation = { __typename?: 'Mutation', createEarning?: { __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, currency?: CurrencyEnum | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupTypeReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null };
+export type CreateEarningMutation = { __typename?: 'Mutation', createEarning?: { __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, currency?: CurrencyEnum | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null };
 
 export type CreateEarningGroupMutationVariables = Exact<{
   input: CreateEarningGroupInput;
 }>;
 
 
-export type CreateEarningGroupMutation = { __typename?: 'Mutation', createEarningGroup?: { __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null };
+export type CreateEarningGroupMutation = { __typename?: 'Mutation', createEarningGroup?: { __typename?: 'EarningsGroup', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null };
 
 export type CreateUserMutationVariables = Exact<{
   input: CreateUserInput;
@@ -213,12 +187,12 @@ export type GetEarningsQueryVariables = Exact<{
 }>;
 
 
-export type GetEarningsQuery = { __typename?: 'Query', getEarnings?: Array<{ __typename?: 'Earnings', id?: number | null, currency?: CurrencyEnum | null, month?: MonthEnum | null, year?: number | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupTypeReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null> | null };
+export type GetEarningsQuery = { __typename?: 'Query', getEarnings?: Array<{ __typename?: 'Earnings', id?: number | null, currency?: CurrencyEnum | null, month?: MonthEnum | null, year?: number | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null> | null };
 
 export type GetEarningGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetEarningGroupsQuery = { __typename?: 'Query', getEarningGroups?: Array<{ __typename?: 'EarningsGroupType', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null> | null };
+export type GetEarningGroupsQuery = { __typename?: 'Query', getEarningGroups?: Array<{ __typename?: 'EarningsGroup', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 

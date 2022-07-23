@@ -79,7 +79,7 @@ export const getEarnings = async (
 	})
 }
 export const getEarningGroups = async (userId: number) => {
-	return EarningGroup.findAll({
+	return await EarningGroup.findAll({
 		where: { userId },
 		order: [['id', 'DESC']],
 	})

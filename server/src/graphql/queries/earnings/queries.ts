@@ -1,28 +1,20 @@
-import * as graphql from 'graphql'
-
+import { gql } from 'apollo-server-express'
 import { checkIfLoggedIn } from '../../../services/auth'
 import { getEarningGroups, getEarnings } from '../../../services/earnings'
-import { EarningsGroupType, EarningsType } from './types'
-export default {
-	getEarnings: {
-		name: 'getEarnings',
-		description: 'Gets all the earnings associated to an earningGroup',
-		type: new graphql.GraphQLList(EarningsType),
-		args: {
-			earningGroupId: { type: new graphql.GraphQLNonNull(graphql.GraphQLInt) },
-		},
-		resolve: async (_: any, args: any, context: any) => {
-			checkIfLoggedIn(context)
-			return await getEarnings(context?.userId, args.earningGroupId)
-		},
+
+export const earningQueries = gql`
+	type Query {
+		getEarnings(earningGroupId: Int!): [Earnings]
+		getEarningGroups: [EarningsGroup]
+	}
+`
+export const earningQueryResolvers = {
+	getEarnings: async (source: any, args: any, context: any) => {
+		checkIfLoggedIn(context.req)
+		return await getEarnings(context?.req?.userId, args.earningGroupId)
 	},
-	getEarningGroups: {
-		name: 'getEarningGroups',
-		description: 'Gets the earningGroups with the earnings',
-		type: new graphql.GraphQLList(EarningsGroupType),
-		resolve: async (_: any, args: any, context: any) => {
-			checkIfLoggedIn(context)
-			return await getEarningGroups(context.userId)
-		},
+	getEarningGroups: async (source: any, args: any, context: any) => {
+		checkIfLoggedIn(context.req)
+		return await getEarningGroups(context?.req?.userId)
 	},
 }

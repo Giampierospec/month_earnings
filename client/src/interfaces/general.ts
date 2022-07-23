@@ -3,7 +3,7 @@ import {
   CreateEarningMutationVariables,
   CreateUserMutationVariables,
   Earnings,
-  EarningsGroupType,
+  EarningsGroup,
   LoginMutationVariables,
   User,
 } from '../generated/graphql'
@@ -11,7 +11,7 @@ import {
 export interface Reducers {
   auth: User
   earnings: Earnings[]
-  earningGroups: EarningsGroupType[]
+  earningGroups: EarningsGroup[]
 }
 export interface Actions {
   getUser: () => Promise<void>
