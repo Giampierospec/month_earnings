@@ -1,6 +1,5 @@
-import { gql } from 'apollo-server-core'
-import { graphql, GraphQLObjectType, GraphQLSchema } from 'graphql'
 import { directives } from './directives'
+import { generalTypes } from './general'
 import { mutationResolvers, mutations, mutationTypes } from './mutations'
 // import mutations from './mutations'
 import { queries, queriesResolvers, queryTypes } from './queries'
@@ -10,13 +9,17 @@ import { queries, queriesResolvers, queryTypes } from './queries'
 // 	fields: { ...queries },
 // })
 export const TypeDefs = [
+	...generalTypes,
 	...queryTypes,
 	...queries,
 	...mutations,
 	...mutationTypes,
 	...directives,
 ]
-export const Resolvers = { ...queriesResolvers, ...mutationResolvers }
+export const Resolvers = {
+	...queriesResolvers,
+	...mutationResolvers,
+}
 
 // const MutationType = new GraphQLObjectType({
 // 	name: 'Mutation',

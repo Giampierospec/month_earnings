@@ -2,6 +2,8 @@ import {
   CreateEarningGroupMutationVariables,
   CreateEarningMutationVariables,
   CreateUserMutationVariables,
+  Earnings,
+  EarningsPaginator,
   LoginMutationVariables,
 } from '../generated/graphql'
 import { createEarning } from '../graphql/mutations/createEarning'
@@ -12,6 +14,8 @@ import { logout } from '../graphql/mutations/logout'
 import { getEarnings } from '../graphql/queries/getEarnings'
 import { getEarningsGroup } from '../graphql/queries/getEarningsGroups'
 import { me } from '../graphql/queries/me'
+import { PaginationArgs } from '../interfaces/general'
+import { loadAll } from '../utils/helpers'
 import * as types from './types'
 export const getUser = () => async (dispatch) => {
   const user = await me()
@@ -34,10 +38,20 @@ export const logoutUser = () => async (dispatch) => {
   dispatch({ type: types.LOGOUT_USER, payload: user })
 }
 
-export const getAllEarningGroups = () => async (dispatch) => {
-  const earningGroups = await getEarningsGroup()
-  dispatch({ type: types.GET_EARNING_GROUPS, payload: earningGroups })
-}
+export const getAllEarningGroups =
+  (args: PaginationArgs) => async (dispatch) => {
+    const earningGroups = await getEarningsGroup({
+      ...args,
+    })
+    dispatch({ type: types.GET_EARNING_GROUPS, payload: earningGroups })
+  }
+export const getMoreEarningGroups =
+  (args: PaginationArgs) => async (dispatch) => {
+    const earningGroups = await getEarningsGroup({
+      ...args,
+    })
+    dispatch({ type: types.GET_MORE_EARNING_GROUPS, payload: earningGroups })
+  }
 
 export const createNewGroup =
   (variables: CreateEarningGroupMutationVariables) => async (dispatch) => {
@@ -48,13 +62,26 @@ export const createNewGroup =
     })
   }
 
-export const getAllEarnings = (earningGroupId: number) => async (dispatch) => {
-  const earnings = await getEarnings({ earningGroupId })
-  dispatch({
-    type: types.GET_EARNINGS,
-    payload: earnings,
-  })
-}
+export const getAllEarnings =
+  (args: PaginationArgs & { earningGroupId: number }) => async (dispatch) => {
+    let earnings: EarningsPaginator
+    if (args.loadAll) {
+      const items = await loadAll<Earnings>(getEarnings, {
+        earningGroupId: args.earningGroupId,
+      })
+      earnings = {
+        hasMore: false,
+        total: items?.length,
+        items,
+      }
+    } else {
+      earnings = await getEarnings({ ...args })
+    }
+    dispatch({
+      type: types.GET_EARNINGS,
+      payload: earnings,
+    })
+  }
 export const createEarnings =
   (variables: CreateEarningMutationVariables) => async (dispatch) => {
     const earnings = await createEarning(variables)

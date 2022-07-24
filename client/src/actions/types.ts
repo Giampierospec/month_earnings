@@ -7,6 +7,7 @@ export const LOGOUT_USER = 'LOGOUT_USER'
 //Earning Group
 
 export const GET_EARNING_GROUPS = 'GET_EARNING_GROUPS'
+export const GET_MORE_EARNING_GROUPS = 'GET_MORE_EARNING_GROUPS'
 export const CREATE_EARNING_GROUP = 'CREATE_EARNING_GROUP'
 
 //Earnings

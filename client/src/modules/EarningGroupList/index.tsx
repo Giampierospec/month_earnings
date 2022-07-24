@@ -1,21 +1,26 @@
 import { Flex, Text, useToast, VStack } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getAllEarningGroups } from '../../actions'
+import { getAllEarningGroups, getMoreEarningGroups } from '../../actions'
 import EarningGroupCard from '../../components/EarningGroupCard'
 import PrimaryButton from '../../components/PrimaryButton'
+import { EarningsGroup } from '../../generated/graphql'
 import { Actions, Reducers } from '../../interfaces/general'
 import { errorsConvert } from '../../utils/helpers'
 
+const MAX_PER_PAGE = 10
 const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
   earningGroups,
   getAllEarningGroups,
+  getMoreEarningGroups,
 }) => {
   const toast = useToast()
   const getEarningGroup = async () => {
     try {
-      await getAllEarningGroups()
+      await getAllEarningGroups({
+        first: MAX_PER_PAGE,
+      })
     } catch (error) {
       toast({
         title: 'An error has occurred',
@@ -26,6 +31,28 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
       })
     }
   }
+  const handleScroll = async () => {
+    const bottom =
+      Math.ceil(window.innerHeight + window.scrollY) >=
+      document.documentElement.scrollHeight
+    if (bottom) {
+      if (earningGroups.hasMore) {
+        await getMoreEarningGroups({
+          first: MAX_PER_PAGE,
+          page: earningGroups.currentPage + 1,
+        })
+      }
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [earningGroups])
+
   useEffect(() => {
     getEarningGroup()
   }, [])
@@ -41,9 +68,9 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
         <Link to="/create-group">
           <PrimaryButton>Create new Group</PrimaryButton>
         </Link>
-        {earningGroups.length > 0 ? (
-          earningGroups?.map((earningGroup, i) => (
-            <EarningGroupCard key={i} {...earningGroup} />
+        {earningGroups.items?.length > 0 ? (
+          earningGroups?.items?.map((earningGroup, i) => (
+            <EarningGroupCard key={i} {...(earningGroup as EarningsGroup)} />
           ))
         ) : (
           <Text>Nothing to show at the moment</Text>
@@ -54,6 +81,7 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
 }
 const mapStateToprops = ({ earningGroups }) => ({ earningGroups })
 
-export default connect(mapStateToprops, { getAllEarningGroups })(
-  EarningGroupList
-)
+export default connect(mapStateToprops, {
+  getAllEarningGroups,
+  getMoreEarningGroups,
+})(EarningGroupList)

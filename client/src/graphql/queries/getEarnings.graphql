@@ -1,22 +1,27 @@
-query GetEarnings($earningGroupId: Int!) {
-  getEarnings(earningGroupId: $earningGroupId) {
-    id
-    currency
-    month
-    year
-    month_earnings
-    spent_in_month
-    earning_group_id
-    earningGroup {
+query GetEarnings($earningGroupId: Int!, $first: Int!, $page: Int) {
+  getEarnings(earningGroupId: $earningGroupId, first: $first, page: $page) {
+    hasMore
+    currentPage
+    total
+    items {
       id
-      name
-    }
-    earningGroup {
-      name
-    }
-    concepts {
-      concept
-      amount
+      currency
+      month
+      year
+      month_earnings
+      spent_in_month
+      earning_group_id
+      earningGroup {
+        id
+        name
+      }
+      earningGroup {
+        name
+      }
+      concepts {
+        concept
+        amount
+      }
     }
   }
 }

@@ -3,6 +3,7 @@ import { ModifiedRequest } from '../middleware/auth'
 import EarningConcepts from '../models/EarningConcepts'
 import EarningGroup from '../models/EarningGroup'
 import Earnings from '../models/Earnings'
+import { generatePagination } from '../utils/helpers'
 
 enum CurrencyEnum {
 	DOP = 'DOP',
@@ -21,6 +22,10 @@ interface EarningInput {
 	concepts: Concept[]
 	userId: number
 	earning_group_id: number
+}
+interface PaginationArgs {
+	first: number
+	page?: number
 }
 interface IAddToEarningGroup {
 	id: number
@@ -70,19 +75,31 @@ export const createEarning = async ({
 
 export const getEarnings = async (
 	userId: number,
-	earningGroupId: number
-): Promise<Earnings[]> => {
-	return await Earnings.findAll({
+	args: PaginationArgs & { earningGroupId: number }
+) => {
+	const { earningGroupId, first, page } = args
+	const earnings = await Earnings.findAndCountAll({
 		where: {
 			[Op.and]: [{ userId, earning_group_id: earningGroupId }],
 		},
 	})
+	return generatePagination(earnings.count, first, page ?? 1, earnings.rows)
 }
-export const getEarningGroups = async (userId: number) => {
-	return await EarningGroup.findAll({
+export const getEarningGroups = async (
+	userId: number,
+	args: PaginationArgs
+) => {
+	const earningGroups = await EarningGroup.findAndCountAll({
 		where: { userId },
 		order: [['id', 'DESC']],
 	})
+	const { first, page } = args
+	return generatePagination(
+		earningGroups.count,
+		first,
+		page ?? 1,
+		earningGroups.rows
+	)
 }
 interface CreateEarningGroupProps {
 	name: string

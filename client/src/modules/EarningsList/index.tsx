@@ -7,7 +7,7 @@ import EarningsTable from '../../components/EarningsTable'
 import { getEarnings } from '../../graphql/queries/getEarnings'
 
 import { Reducers, Actions } from '../../interfaces/general'
-
+const MAX_PER_PAGE = 100
 const EarningList: React.FC<Partial<Actions & Reducers>> = ({
   earnings,
   getAllEarnings,
@@ -16,7 +16,11 @@ const EarningList: React.FC<Partial<Actions & Reducers>> = ({
   const toast = useToast()
   const loadEarnings = async () => {
     try {
-      await getAllEarnings(parseInt(earningGroupId))
+      await getAllEarnings({
+        earningGroupId: parseInt(earningGroupId),
+        loadAll: true,
+        first: 100,
+      })
     } catch (error) {
       toast({
         title: 'An error has ocurred',
@@ -30,7 +34,7 @@ const EarningList: React.FC<Partial<Actions & Reducers>> = ({
   useEffect(() => {
     loadEarnings()
   }, [])
-  return <EarningsTable earnings={earnings} />
+  return <EarningsTable earnings={earnings.items} />
 }
 
 const mapStateToProps = ({ earnings }) => ({ earnings })

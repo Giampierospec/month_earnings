@@ -2,27 +2,35 @@ import {
   CreateEarningGroupMutationVariables,
   CreateEarningMutationVariables,
   CreateUserMutationVariables,
-  Earnings,
-  EarningsGroup,
+  EarningsPaginator,
   LoginMutationVariables,
   User,
 } from '../generated/graphql'
 
 export interface Reducers {
   auth: User
-  earnings: Earnings[]
-  earningGroups: EarningsGroup[]
+  earnings: EarningsPaginator
+  earningGroups: EarningsPaginator
 }
+export interface PaginationArgs {
+  first: number
+  page?: number
+  loadAll?: boolean
+}
+
 export interface Actions {
   getUser: () => Promise<void>
   loginUser: (values: LoginMutationVariables) => Promise<void>
   createNewUser: (values: CreateUserMutationVariables) => Promise<void>
   logoutUser: () => Promise<void>
-  getAllEarningGroups: () => Promise<void>
+  getAllEarningGroups: (args: PaginationArgs) => Promise<void>
+  getMoreEarningGroups: (args: PaginationArgs) => Promise<void>
   createNewGroup: (
     earningGroups: CreateEarningGroupMutationVariables
   ) => Promise<void>
-  getAllEarnings: (earningGroupId: number) => Promise<void>
+  getAllEarnings: (
+    args: PaginationArgs & { earningGroupId: number }
+  ) => Promise<void>
   createEarnings: (values: CreateEarningMutationVariables) => Promise<void>
 }
 export interface IFormSubmit<T> {

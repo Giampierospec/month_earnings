@@ -38,7 +38,7 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
           Go Back
         </PrimaryButton>
       </Link>
-      {earnings.length > 0 ? (
+      {earnings?.length > 0 ? (
         <Box boxShadow="lg" w="100%" p="20px">
           <Heading
             textTransform="uppercase"

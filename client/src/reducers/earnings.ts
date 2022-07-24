@@ -1,11 +1,12 @@
 import * as types from '../actions/types'
+import { EarningsPaginator } from '../generated/graphql'
 
-const earnings = (state = [], action: any) => {
+const earnings = (state = {} as EarningsPaginator, action: any) => {
   switch (action.type) {
     case types.GET_EARNINGS:
-      return action.payload ? [...action.payload] : []
+      return action.payload ? action.payload : {}
     case types.CREATE_EARNINGS:
-      return [action.payload, ...state]
+      return { ...state, items: [action.payload, ...state.items] }
     default:
       return state
   }

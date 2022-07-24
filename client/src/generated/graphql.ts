@@ -15,15 +15,18 @@ export type Scalars = {
   Float: number;
 };
 
+/** Type for concepts input */
 export type ConceptsInputType = {
   amount?: InputMaybe<Scalars['Float']>;
   concept?: InputMaybe<Scalars['String']>;
 };
 
+/** Input to create a new Earning Group */
 export type CreateEarningGroupInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+/** Input to create a new Earning */
 export type CreateEarningInput = {
   concepts?: InputMaybe<Array<InputMaybe<ConceptsInputType>>>;
   currency?: InputMaybe<CurrencyEnum>;
@@ -33,6 +36,7 @@ export type CreateEarningInput = {
   year?: InputMaybe<Scalars['Int']>;
 };
 
+/** Input for creating an user */
 export type CreateUserInput = {
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
@@ -40,18 +44,21 @@ export type CreateUserInput = {
   password?: InputMaybe<Scalars['String']>;
 };
 
+/** Enum for available currencies */
 export enum CurrencyEnum {
   Dop = 'DOP',
   Eur = 'EUR',
   Usd = 'USD'
 }
 
+/** Earning Concepts associated to an earning */
 export type EarningConcepts = {
   __typename?: 'EarningConcepts';
   amount?: Maybe<Scalars['Float']>;
   concept?: Maybe<Scalars['String']>;
 };
 
+/** Earnings Type */
 export type Earnings = {
   __typename?: 'Earnings';
   concepts?: Maybe<Array<Maybe<EarningConcepts>>>;
@@ -66,6 +73,7 @@ export type Earnings = {
   year?: Maybe<Scalars['Int']>;
 };
 
+/** Earnings Group Type */
 export type EarningsGroup = {
   __typename?: 'EarningsGroup';
   earnings?: Maybe<Array<Maybe<Earnings>>>;
@@ -73,17 +81,36 @@ export type EarningsGroup = {
   name?: Maybe<Scalars['String']>;
 };
 
+export type EarningsGroupPaginator = Paginator & {
+  __typename?: 'EarningsGroupPaginator';
+  currentPage?: Maybe<Scalars['Int']>;
+  hasMore?: Maybe<Scalars['Boolean']>;
+  items?: Maybe<Array<Maybe<EarningsGroup>>>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+/** A reduced version of earningsGroup */
 export type EarningsGroupReduced = {
   __typename?: 'EarningsGroupReduced';
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
 };
 
+export type EarningsPaginator = Paginator & {
+  __typename?: 'EarningsPaginator';
+  currentPage?: Maybe<Scalars['Int']>;
+  hasMore?: Maybe<Scalars['Boolean']>;
+  items?: Maybe<Array<Maybe<Earnings>>>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+/** Input for login mutation */
 export type LoginInput = {
   email?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
 };
 
+/** Enum for months */
 export enum MonthEnum {
   April = 'April',
   August = 'August',
@@ -101,9 +128,13 @@ export enum MonthEnum {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Creates a new earning associated to an Earning Group */
   createEarning?: Maybe<Earnings>;
+  /** Creates an Earning Group */
   createEarningGroup?: Maybe<EarningsGroup>;
+  /** Creates a new user */
   createUser?: Maybe<User>;
+  /** Logins the user */
   login?: Maybe<User>;
   logout?: Maybe<User>;
 };
@@ -128,18 +159,40 @@ export type MutationLoginArgs = {
   input: LoginInput;
 };
 
+export type Pageable = Earnings | EarningsGroup | User;
+
+/** General paginator inteface */
+export type Paginator = {
+  currentPage?: Maybe<Scalars['Int']>;
+  hasMore?: Maybe<Scalars['Boolean']>;
+  items?: Maybe<Array<Maybe<Pageable>>>;
+  total?: Maybe<Scalars['Int']>;
+};
+
 export type Query = {
   __typename?: 'Query';
-  getEarningGroups?: Maybe<Array<Maybe<EarningsGroup>>>;
-  getEarnings?: Maybe<Array<Maybe<Earnings>>>;
+  /** Gets the earnings group with their earnings */
+  getEarningGroups?: Maybe<EarningsGroupPaginator>;
+  /** Gets the earnings by earningGroupId */
+  getEarnings?: Maybe<EarningsPaginator>;
+  /** Gets the current user */
   me?: Maybe<User>;
+};
+
+
+export type QueryGetEarningGroupsArgs = {
+  first: Scalars['Int'];
+  page?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type QueryGetEarningsArgs = {
   earningGroupId: Scalars['Int'];
+  first: Scalars['Int'];
+  page?: InputMaybe<Scalars['Int']>;
 };
 
+/** User Type Object */
 export type User = {
   __typename?: 'User';
   email?: Maybe<Scalars['String']>;
@@ -184,15 +237,20 @@ export type LogoutMutation = { __typename?: 'Mutation', logout?: { __typename?: 
 
 export type GetEarningsQueryVariables = Exact<{
   earningGroupId: Scalars['Int'];
+  first: Scalars['Int'];
+  page?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetEarningsQuery = { __typename?: 'Query', getEarnings?: Array<{ __typename?: 'Earnings', id?: number | null, currency?: CurrencyEnum | null, month?: MonthEnum | null, year?: number | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null> | null };
+export type GetEarningsQuery = { __typename?: 'Query', getEarnings?: { __typename?: 'EarningsPaginator', hasMore?: boolean | null, currentPage?: number | null, total?: number | null, items?: Array<{ __typename?: 'Earnings', id?: number | null, currency?: CurrencyEnum | null, month?: MonthEnum | null, year?: number | null, month_earnings?: number | null, spent_in_month?: number | null, earning_group_id?: number | null, earningGroup?: { __typename?: 'EarningsGroupReduced', id?: number | null, name?: string | null } | null, concepts?: Array<{ __typename?: 'EarningConcepts', concept?: string | null, amount?: number | null } | null> | null } | null> | null } | null };
 
-export type GetEarningGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetEarningGroupsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  page?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type GetEarningGroupsQuery = { __typename?: 'Query', getEarningGroups?: Array<{ __typename?: 'EarningsGroup', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null> | null };
+export type GetEarningGroupsQuery = { __typename?: 'Query', getEarningGroups?: { __typename?: 'EarningsGroupPaginator', hasMore?: boolean | null, currentPage?: number | null, total?: number | null, items?: Array<{ __typename?: 'EarningsGroup', id?: number | null, name?: string | null, earnings?: Array<{ __typename?: 'Earnings', id?: number | null, month?: MonthEnum | null, year?: number | null, spent_in_month?: number | null } | null> | null } | null> | null } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -395,25 +453,30 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const GetEarningsDocument = gql`
-    query GetEarnings($earningGroupId: Int!) {
-  getEarnings(earningGroupId: $earningGroupId) {
-    id
-    currency
-    month
-    year
-    month_earnings
-    spent_in_month
-    earning_group_id
-    earningGroup {
+    query GetEarnings($earningGroupId: Int!, $first: Int!, $page: Int) {
+  getEarnings(earningGroupId: $earningGroupId, first: $first, page: $page) {
+    hasMore
+    currentPage
+    total
+    items {
       id
-      name
-    }
-    earningGroup {
-      name
-    }
-    concepts {
-      concept
-      amount
+      currency
+      month
+      year
+      month_earnings
+      spent_in_month
+      earning_group_id
+      earningGroup {
+        id
+        name
+      }
+      earningGroup {
+        name
+      }
+      concepts {
+        concept
+        amount
+      }
     }
   }
 }
@@ -432,6 +495,8 @@ export const GetEarningsDocument = gql`
  * const { data, loading, error } = useGetEarningsQuery({
  *   variables: {
  *      earningGroupId: // value for 'earningGroupId'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
  *   },
  * });
  */
@@ -447,15 +512,20 @@ export type GetEarningsQueryHookResult = ReturnType<typeof useGetEarningsQuery>;
 export type GetEarningsLazyQueryHookResult = ReturnType<typeof useGetEarningsLazyQuery>;
 export type GetEarningsQueryResult = Apollo.QueryResult<GetEarningsQuery, GetEarningsQueryVariables>;
 export const GetEarningGroupsDocument = gql`
-    query GetEarningGroups {
-  getEarningGroups {
-    id
-    name
-    earnings {
+    query GetEarningGroups($first: Int!, $page: Int) {
+  getEarningGroups(first: $first, page: $page) {
+    hasMore
+    currentPage
+    total
+    items {
       id
-      month
-      year
-      spent_in_month
+      name
+      earnings {
+        id
+        month
+        year
+        spent_in_month
+      }
     }
   }
 }
@@ -473,10 +543,12 @@ export const GetEarningGroupsDocument = gql`
  * @example
  * const { data, loading, error } = useGetEarningGroupsQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetEarningGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GetEarningGroupsQuery, GetEarningGroupsQueryVariables>) {
+export function useGetEarningGroupsQuery(baseOptions: Apollo.QueryHookOptions<GetEarningGroupsQuery, GetEarningGroupsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetEarningGroupsQuery, GetEarningGroupsQueryVariables>(GetEarningGroupsDocument, options);
       }

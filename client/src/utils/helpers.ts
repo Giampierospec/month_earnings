@@ -1,4 +1,5 @@
 import { KeyboardEvent } from 'react'
+import { Paginator } from '../generated/graphql'
 import { GraphQLError } from '../interfaces/general'
 
 export const errorsConvert = (error: Error & GraphQLError) => {
@@ -14,4 +15,27 @@ export const limitKeyPress = (
   if (e.currentTarget.value.length === limit) {
     e.preventDefault()
   }
+}
+
+export const loadAll = async <T>(
+  loader: (opts: any) => Promise<Paginator>,
+  options?: any,
+  first = 100,
+  pageNumber = 1
+): Promise<T[]> => {
+  const result = await loader({
+    first,
+    page: pageNumber,
+    ...options,
+  })
+  const items = result.items
+  while (result.hasMore) {
+    const res = await loader({
+      first,
+      page: pageNumber,
+      ...options,
+    })
+    items.concat(res.items)
+  }
+  return items as T[]
 }
