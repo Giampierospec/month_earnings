@@ -149,11 +149,11 @@ export const addToEarningGroup = async ({
 	userId,
 	earnings,
 }: IAddToEarningGroup) => {
-	const earningGroup = (await EarningGroup.findOne({
+	const earningGroup = await EarningGroup.findOne({
 		where: {
 			[Op.and]: [{ id, userId }],
 		},
-	})) as any
+	})
 
 	if (!earningGroup) {
 		throw new Error(`No earning group found with id ${id}`)
@@ -163,7 +163,7 @@ export const addToEarningGroup = async ({
 			id: [...earnings.map((x) => x.id)],
 		},
 	})
-	resultEarnings?.forEach(async (earning: any) => {
+	resultEarnings?.forEach(async (earning) => {
 		earning.earning_group_id = earningGroup.id
 		await earning.save()
 	})
