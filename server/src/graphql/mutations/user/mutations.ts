@@ -1,20 +1,6 @@
-// import { createUserInput, loginInput, loginResponse } from './types'
-// import * as graphql from 'graphql'
-// import User from '../../../models/User'
-// import {
-// 	checkIfAlreadyloggedIn,
-// 	createUser,
-// 	login,
-// } from '../../../services/auth'
-// import { userType } from '../../queries/users/types'
-
 import { gql } from 'apollo-server-core'
 import User from '../../../models/User'
-import {
-	checkIfAlreadyloggedIn,
-	createUser,
-	login,
-} from '../../../services/auth'
+import { createUser, login } from '../../../services/auth'
 import { generateToken } from '../../../utils/helpers'
 export const userMutations = gql`
 	type Mutation {

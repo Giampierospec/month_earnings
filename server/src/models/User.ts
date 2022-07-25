@@ -74,7 +74,7 @@ User.init(
 		timestamps: false,
 	}
 )
-User.beforeCreate(async (user: any) => {
+User.beforeCreate(async (user) => {
 	user.password = await genPassword(user.password)
 })
 User.belongsTo(Roles, {
