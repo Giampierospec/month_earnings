@@ -25,8 +25,6 @@ export const generatePagination = <T>(
 	items: T[]
 ): PageableList<T> => {
 	const totalPages = Math.ceil(total / first)
-	console.log(total)
-	console.log(first)
 	return {
 		total,
 		currentPage: page,

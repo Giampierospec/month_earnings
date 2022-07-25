@@ -1,14 +1,11 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
-import router from './src/routes'
-import { graphqlHTTP } from 'express-graphql'
 import { Resolvers, TypeDefs } from './src/graphql/schema'
 import cors from 'cors'
 import './src/db/connection'
 import { isLoggedIn } from './src/middleware/auth'
 import cookieParser from 'cookie-parser'
-import expressPlayground from 'graphql-playground-middleware-express'
 import { startApolloServer } from './src/services/apolloServer'
 
 dotenv.config()
