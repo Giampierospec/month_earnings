@@ -1,10 +1,34 @@
-import { DataTypes, Model } from 'sequelize'
+import {
+	CreationOptional,
+	DataTypes,
+	InferAttributes,
+	InferCreationAttributes,
+	Model,
+	NonAttribute,
+} from 'sequelize'
 import { sequelize } from '../db/connection'
 import { genPassword } from '../utils/password'
 import Roles from './Roles'
-class User extends Model {}
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+	declare id: CreationOptional<number>
+	declare firstName: string
+	declare lastName: string
+	declare email: string
+	declare password: string
+	declare jsonwebtoken: CreationOptional<string>
+	declare created_at: CreationOptional<Date>
+	declare roleId: number
+	declare role?: NonAttribute<Roles>
+}
 User.init(
 	{
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			allowNull: false,
+			autoIncrement: true,
+			autoIncrementIdentity: true,
+		},
 		firstName: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -54,6 +78,7 @@ User.beforeCreate(async (user: any) => {
 	user.password = await genPassword(user.password)
 })
 User.belongsTo(Roles, {
+	as: 'role',
 	foreignKey: 'roleId',
 })
 

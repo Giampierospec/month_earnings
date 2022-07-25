@@ -1,11 +1,34 @@
-import { DataTypes, Model } from 'sequelize'
+import {
+	CreationOptional,
+	DataTypes,
+	InferAttributes,
+	InferCreationAttributes,
+	Model,
+} from 'sequelize'
 import { sequelize } from '../db/connection'
 import Earnings from './Earnings'
 
-class EarningConcepts extends Model {}
+class EarningConcepts extends Model<
+	InferAttributes<EarningConcepts>,
+	InferCreationAttributes<EarningConcepts>
+> {
+	declare id: CreationOptional<number>
+	declare concept: string
+	declare amount: number
+	declare earnings_id: number
+	declare created_at: CreationOptional<Date>
+	declare updated_at: CreationOptional<Date>
+}
 
 EarningConcepts.init(
 	{
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			allowNull: false,
+			autoIncrement: true,
+			autoIncrementIdentity: true,
+		},
 		concept: {
 			type: DataTypes.STRING,
 		},

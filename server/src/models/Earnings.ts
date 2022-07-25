@@ -1,9 +1,28 @@
-import { DataTypes, Model } from 'sequelize'
+import {
+	CreationOptional,
+	DataTypes,
+	InferAttributes,
+	InferCreationAttributes,
+	Model,
+} from 'sequelize'
 import { sequelize } from '../db/connection'
-import EarningConcepts from './EarningConcepts'
-import EarningGroup from './EarningGroup'
+import { CurrencyEnum, MonthEnum } from '../services/earnings'
 
-class Earnings extends Model {}
+class Earnings extends Model<
+	InferAttributes<Earnings>,
+	InferCreationAttributes<Earnings>
+> {
+	declare id: CreationOptional<number>
+	declare currency: CurrencyEnum
+	declare month_earnings: number
+	declare month: MonthEnum
+	declare spent_in_month: number
+	declare year: number
+	declare earning_group_id: number
+	declare userId: number
+	declare created_at: CreationOptional<Date>
+	declare updated_at: CreationOptional<Date>
+}
 Earnings.init(
 	{
 		id: {

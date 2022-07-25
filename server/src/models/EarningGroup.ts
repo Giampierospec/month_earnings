@@ -1,7 +1,20 @@
-import { DataTypes, Model } from 'sequelize'
+import {
+	CreationOptional,
+	DataTypes,
+	InferAttributes,
+	InferCreationAttributes,
+	Model,
+} from 'sequelize'
 import { sequelize } from '../db/connection'
 
-class EarningGroup extends Model {}
+class EarningGroup extends Model<
+	InferAttributes<EarningGroup>,
+	InferCreationAttributes<EarningGroup>
+> {
+	declare id: CreationOptional<number>
+	declare name: string
+	declare userId: number
+}
 
 EarningGroup.init(
 	{

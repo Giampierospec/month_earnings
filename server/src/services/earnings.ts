@@ -5,10 +5,23 @@ import EarningGroup from '../models/EarningGroup'
 import Earnings from '../models/Earnings'
 import { generatePagination } from '../utils/helpers'
 
-enum CurrencyEnum {
+export enum CurrencyEnum {
 	DOP = 'DOP',
 	USD = 'USD',
 	EUR = 'EUR',
+}
+export enum MonthEnum {
+	January = 'January',
+	February = 'February',
+	March = 'March',
+	April = 'April',
+	May = 'May',
+	June = 'June',
+	July = 'July',
+	August = 'August',
+	September = 'September',
+	October = 'October',
+	December = 'December',
 }
 interface Concept {
 	concept: string
@@ -17,7 +30,7 @@ interface Concept {
 interface EarningInput {
 	currency: CurrencyEnum
 	month_earnings: number
-	month: string
+	month: MonthEnum
 	year: number
 	concepts: Concept[]
 	userId: number
@@ -57,7 +70,7 @@ export const createEarning = async ({
 		throw new Error(`The concepts amount can't exceed the monthly earnings`)
 	}
 
-	const earning = (await Earnings.create({
+	const earning = await Earnings.create({
 		currency,
 		month_earnings,
 		spent_in_month: conceptSum,
@@ -65,7 +78,7 @@ export const createEarning = async ({
 		month,
 		year,
 		userId,
-	})) as any
+	})
 	await EarningConcepts.bulkCreate([
 		...concepts.map((concept) => ({ ...concept, earnings_id: earning.id })),
 	])

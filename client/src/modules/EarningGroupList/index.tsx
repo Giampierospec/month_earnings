@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getAllEarningGroups, getMoreEarningGroups } from '../../actions'
 import EarningGroupCard from '../../components/EarningGroupCard'
+import Loader from '../../components/Loader'
 import PrimaryButton from '../../components/PrimaryButton'
 import { EarningsGroup } from '../../generated/graphql'
 import { Actions, Reducers } from '../../interfaces/general'
@@ -16,6 +17,7 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
   getMoreEarningGroups,
 }) => {
   const toast = useToast()
+  const [loadingMore, setLoadingMore] = useState(false)
   const getEarningGroup = async () => {
     try {
       await getAllEarningGroups({
@@ -37,10 +39,12 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
       document.documentElement.scrollHeight
     if (bottom) {
       if (earningGroups.hasMore) {
+        setLoadingMore(true)
         await getMoreEarningGroups({
           first: MAX_PER_PAGE,
           page: earningGroups.currentPage + 1,
         })
+        setLoadingMore(false)
       }
     }
   }
@@ -75,6 +79,7 @@ const EarningGroupList: React.FC<Partial<Actions & Reducers>> = ({
         ) : (
           <Text>Nothing to show at the moment</Text>
         )}
+        {loadingMore && <Loader />}
       </VStack>
     </Flex>
   )

@@ -10,11 +10,11 @@ interface LoginArgs {
 }
 
 export const login = async ({ email, password }: LoginArgs) => {
-	const user = (await User.findOne({
+	const user = await User.findOne({
 		where: {
 			email,
 		},
-	})) as any
+	})
 
 	if (!user) {
 		throw new Error('User not found')

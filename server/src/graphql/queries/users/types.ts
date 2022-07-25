@@ -16,11 +16,14 @@ const user = gql`
 export const userTypeResolvers = {
 	User: {
 		role: async (parent: any) => {
-			const user = (await User.findOne({
+			const user = await User.findOne({
 				where: { id: parent.id },
-				include: Roles,
-			})) as any
-			return user?.Role?.role
+				include: {
+					as: 'role',
+					model: Roles,
+				},
+			})
+			return user?.role?.role
 		},
 	},
 }
