@@ -88,7 +88,7 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
                             <Badge
                               bg="blueviolet"
                               color="#FFF"
-                              w="120px"
+                              w="150px"
                               textAlign="center"
                             >
                               {concept.concept}
@@ -164,7 +164,7 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
                         <Badge
                           bg="blueviolet"
                           color="#FFF"
-                          w="120px"
+                          w="150px"
                           textAlign="center"
                         >
                           {concept.concept}
