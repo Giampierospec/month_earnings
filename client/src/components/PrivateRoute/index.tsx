@@ -9,7 +9,7 @@ const PrivateRoute: React.FC<Partial<Reducers & Actions>> = (props) => {
   const location = useLocation()
   useEffect(() => {
     if (_.isEmpty(props.auth))
-      navigate(`/login?returnUrl=${location.pathname}`, { replace: true })
+      navigate('/login', { replace: true, state: { from: location } })
   }, [props.auth])
 
   return <Outlet />

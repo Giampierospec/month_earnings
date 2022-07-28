@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { loginUser } from '../../actions'
 import LoginCard from '../../components/LoginCard'
 import { LoginInput } from '../../generated/graphql'
@@ -11,11 +11,12 @@ import { errorsConvert } from '../../utils/helpers'
 
 const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const location = useLocation()
+  const from = (location.state as any)?.from?.pathname || '/'
   const toast = useToast()
   useEffect(() => {
     if (!_.isEmpty(auth)) {
-      navigate(searchParams.get('returnUrl') || '/', { replace: true })
+      navigate(from, { replace: true })
     }
   }, [auth])
   const handleSubmit = async (values: LoginInput) => {

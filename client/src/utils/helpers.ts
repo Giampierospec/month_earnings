@@ -39,3 +39,7 @@ export const loadAll = async <T>(
   }
   return items as T[]
 }
+export const documentTitleMap = {
+  '/': 'Earnings',
+  '/details': 'Earning Group Details',
+}
