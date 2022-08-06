@@ -8,7 +8,7 @@
     "dev:client": "npm start  --prefix client",
     "dev:server": "npm run dev --prefix server",
     "install": "NPM_CONFIG_PRODUCTION=false npm run install:server",
-    "install:server": "npm i --prefix server && npm run build --prefix:server",
+    "install:server": "npm install --prefix server && npm run build --prefix server",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
