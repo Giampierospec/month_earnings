@@ -9,7 +9,7 @@
     "dev:server": "npm run dev --prefix server",
     "install": "NPM_CONFIG_PRODUCTION=false npm  i --prefix server",
     "postinstall": "npm run build --prefix server",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm i --prefix client && npm run build --prefix client",
+    "heroku-postbuild": "npm i --prefix client && npm run build --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
