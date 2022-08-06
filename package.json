@@ -7,10 +7,9 @@
     "start": "npm start --prefix server",
     "dev:client": "npm start  --prefix client",
     "dev:server": "npm run dev --prefix server",
-    "install": "NPM_CONFIG_PRODUCTION=false npm run install:server && npm run install:client",
-    "install:server": "npm i --prefix server",
-    "install:client": "npm i --prefix client",
-    "postinstall": "NPM_CONFIG_PRODUCTION=false npm run build --prefix server && npm run build --prefix client",
+    "install": "NPM_CONFIG_PRODUCTION=false npm run install:server",
+    "install:server": "npm i --prefix server && npm run build --prefix:server",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
