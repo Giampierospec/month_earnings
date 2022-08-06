@@ -1,8 +1,8 @@
 import { useToast } from '@chakra-ui/react'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { loginUser } from '../../actions'
 import LoginCard from '../../components/LoginCard'
 import { LoginInput } from '../../generated/graphql'
@@ -18,6 +18,7 @@ const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
     if (!_.isEmpty(auth)) {
       navigate(from, { replace: true })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth])
   const handleSubmit = async (values: LoginInput) => {
     try {
