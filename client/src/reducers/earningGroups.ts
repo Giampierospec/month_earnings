@@ -11,6 +11,11 @@ const earningGroups = (state = {} as EarningsGroupPaginator, action) => {
       }
     case types.CREATE_EARNING_GROUP:
       return { ...state, items: [action.payload, ...state.items] }
+    case types.DELETE_EARNING_GROUP:
+      return {
+        ...state,
+        items: [...state.items.filter((x) => x.id !== action.payload)],
+      }
     default:
       return state
   }

@@ -1,0 +1,3 @@
+mutation DeleteEarning($deleteEarningId: Int!) {
+  deleteEarning(id: $deleteEarningId)
+}

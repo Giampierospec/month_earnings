@@ -1,0 +1,3 @@
+mutation DeleteEarningGroup($deleteEarningGroupId: Int!) {
+  deleteEarningGroup(id: $deleteEarningGroupId)
+}
