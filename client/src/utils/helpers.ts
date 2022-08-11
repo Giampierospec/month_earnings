@@ -39,6 +39,11 @@ export const loadAll = async <T>(
   }
   return items as T[]
 }
+export enum UserRoles {
+  SUPER_ADMIN = 'super-admin',
+  ADMIN = 'admin',
+  NORMAL = 'normal',
+}
 export const documentTitleMap = {
   '/': 'Earnings',
   '/details': 'Earning Group Details',

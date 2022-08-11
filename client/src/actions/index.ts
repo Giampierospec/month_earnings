@@ -2,6 +2,8 @@ import {
   CreateEarningGroupMutationVariables,
   CreateEarningMutationVariables,
   CreateUserMutationVariables,
+  DeleteEarningGroupMutationVariables,
+  DeleteEarningMutationVariables,
   Earnings,
   EarningsPaginator,
   LoginMutationVariables,
@@ -9,6 +11,8 @@ import {
 import { createEarning } from '../graphql/mutations/createEarning'
 import { createEarningGroup } from '../graphql/mutations/createEarningGroup'
 import { createUser } from '../graphql/mutations/createUser'
+import { deleteEarning } from '../graphql/mutations/deleteEarning'
+import { deleteEarningGroup } from '../graphql/mutations/deleteEarningGroup'
 import { login } from '../graphql/mutations/login'
 import { logout } from '../graphql/mutations/logout'
 import { getEarnings } from '../graphql/queries/getEarnings'
@@ -44,6 +48,14 @@ export const getAllEarningGroups =
       ...args,
     })
     dispatch({ type: types.GET_EARNING_GROUPS, payload: earningGroups })
+  }
+export const deleteEarningGroupsAction =
+  (variables: DeleteEarningGroupMutationVariables) => async (dispatch) => {
+    await deleteEarningGroup(variables)
+    dispatch({
+      type: types.DELETE_EARNING_GROUP,
+      payload: variables.deleteEarningGroupId,
+    })
   }
 export const getMoreEarningGroups =
   (args: PaginationArgs) => async (dispatch) => {
@@ -88,5 +100,13 @@ export const createEarnings =
     dispatch({
       type: types.CREATE_EARNINGS,
       payload: earnings,
+    })
+  }
+export const deleteEarningAction =
+  (variables: DeleteEarningMutationVariables) => async (dispatch) => {
+    await deleteEarning(variables)
+    dispatch({
+      type: types.DELETE_EARNINGS,
+      payload: variables.deleteEarningId,
     })
   }

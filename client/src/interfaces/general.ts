@@ -2,6 +2,8 @@ import {
   CreateEarningGroupMutationVariables,
   CreateEarningMutationVariables,
   CreateUserMutationVariables,
+  DeleteEarningGroupMutationVariables,
+  DeleteEarningMutationVariables,
   EarningsPaginator,
   LoginMutationVariables,
   User,
@@ -32,6 +34,12 @@ export interface Actions {
     args: PaginationArgs & { earningGroupId: number }
   ) => Promise<void>
   createEarnings: (values: CreateEarningMutationVariables) => Promise<void>
+  deleteEarningAction: (
+    variables: DeleteEarningMutationVariables
+  ) => Promise<void>
+  deleteEarningGroupsAction: (
+    variables: DeleteEarningGroupMutationVariables
+  ) => Promise<void>
 }
 export interface IFormSubmit<T> {
   submit: (values: T) => void

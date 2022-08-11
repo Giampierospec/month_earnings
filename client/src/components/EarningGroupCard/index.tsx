@@ -1,10 +1,43 @@
-import { Badge, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import {
+  Badge,
+  Heading,
+  HStack,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react'
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { deleteEarningGroupsAction } from '../../actions'
 import { EarningsGroup } from '../../generated/graphql'
+import { Actions, Reducers } from '../../interfaces/general'
+import { errorsConvert, UserRoles } from '../../utils/helpers'
 import Card from '../Card'
 
-const EarningGroupCard: React.FC<EarningsGroup> = ({ id, name, earnings }) => {
+const EarningGroupCard: React.FC<
+  EarningsGroup & Partial<Actions & Reducers>
+> = ({ id, name, earnings, auth, deleteEarningGroupsAction }) => {
+  const toast = useToast()
+  const onDeleteGroup = async () => {
+    try {
+      if (
+        window.confirm('Are you sure you want to delete this earning group?')
+      ) {
+        await deleteEarningGroupsAction({
+          deleteEarningGroupId: id,
+        })
+      }
+    } catch (error) {
+      toast({
+        title: 'An error has ocurred',
+        description: errorsConvert(error),
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+      })
+    }
+  }
   return (
     <Card>
       <Heading
@@ -43,9 +76,22 @@ const EarningGroupCard: React.FC<EarningsGroup> = ({ id, name, earnings }) => {
             Add Earning
           </Badge>
         </Link>
+        {(auth?.role === UserRoles.SUPER_ADMIN ||
+          auth?.role === UserRoles.ADMIN) && (
+          <Badge
+            bg="orange"
+            p="5px 10px"
+            onClick={onDeleteGroup}
+            cursor="pointer"
+          >
+            Delete group
+          </Badge>
+        )}
       </HStack>
     </Card>
   )
 }
-
-export default EarningGroupCard
+const mapStateToProps = ({ auth }) => ({ auth })
+export default connect(mapStateToProps, { deleteEarningGroupsAction })(
+  EarningGroupCard
+)

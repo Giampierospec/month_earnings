@@ -134,6 +134,10 @@ export type Mutation = {
   createEarningGroup?: Maybe<EarningsGroup>;
   /** Creates a new user */
   createUser?: Maybe<User>;
+  /** Deletes the earning */
+  deleteEarning: Scalars['Boolean'];
+  /** Deletes the earning group */
+  deleteEarningGroup: Scalars['Boolean'];
   /** Logins the user */
   login?: Maybe<User>;
   logout?: Maybe<User>;
@@ -152,6 +156,16 @@ export type MutationCreateEarningGroupArgs = {
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+export type MutationDeleteEarningArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationDeleteEarningGroupArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -222,6 +236,20 @@ export type CreateUserMutationVariables = Exact<{
 
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id?: number | null, firstName?: string | null, lastName?: string | null, email?: string | null, role?: string | null } | null };
+
+export type DeleteEarningMutationVariables = Exact<{
+  deleteEarningId: Scalars['Int'];
+}>;
+
+
+export type DeleteEarningMutation = { __typename?: 'Mutation', deleteEarning: boolean };
+
+export type DeleteEarningGroupMutationVariables = Exact<{
+  deleteEarningGroupId: Scalars['Int'];
+}>;
+
+
+export type DeleteEarningGroupMutation = { __typename?: 'Mutation', deleteEarningGroup: boolean };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -381,6 +409,68 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const DeleteEarningDocument = gql`
+    mutation DeleteEarning($deleteEarningId: Int!) {
+  deleteEarning(id: $deleteEarningId)
+}
+    `;
+export type DeleteEarningMutationFn = Apollo.MutationFunction<DeleteEarningMutation, DeleteEarningMutationVariables>;
+
+/**
+ * __useDeleteEarningMutation__
+ *
+ * To run a mutation, you first call `useDeleteEarningMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteEarningMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteEarningMutation, { data, loading, error }] = useDeleteEarningMutation({
+ *   variables: {
+ *      deleteEarningId: // value for 'deleteEarningId'
+ *   },
+ * });
+ */
+export function useDeleteEarningMutation(baseOptions?: Apollo.MutationHookOptions<DeleteEarningMutation, DeleteEarningMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteEarningMutation, DeleteEarningMutationVariables>(DeleteEarningDocument, options);
+      }
+export type DeleteEarningMutationHookResult = ReturnType<typeof useDeleteEarningMutation>;
+export type DeleteEarningMutationResult = Apollo.MutationResult<DeleteEarningMutation>;
+export type DeleteEarningMutationOptions = Apollo.BaseMutationOptions<DeleteEarningMutation, DeleteEarningMutationVariables>;
+export const DeleteEarningGroupDocument = gql`
+    mutation DeleteEarningGroup($deleteEarningGroupId: Int!) {
+  deleteEarningGroup(id: $deleteEarningGroupId)
+}
+    `;
+export type DeleteEarningGroupMutationFn = Apollo.MutationFunction<DeleteEarningGroupMutation, DeleteEarningGroupMutationVariables>;
+
+/**
+ * __useDeleteEarningGroupMutation__
+ *
+ * To run a mutation, you first call `useDeleteEarningGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteEarningGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteEarningGroupMutation, { data, loading, error }] = useDeleteEarningGroupMutation({
+ *   variables: {
+ *      deleteEarningGroupId: // value for 'deleteEarningGroupId'
+ *   },
+ * });
+ */
+export function useDeleteEarningGroupMutation(baseOptions?: Apollo.MutationHookOptions<DeleteEarningGroupMutation, DeleteEarningGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteEarningGroupMutation, DeleteEarningGroupMutationVariables>(DeleteEarningGroupDocument, options);
+      }
+export type DeleteEarningGroupMutationHookResult = ReturnType<typeof useDeleteEarningGroupMutation>;
+export type DeleteEarningGroupMutationResult = Apollo.MutationResult<DeleteEarningGroupMutation>;
+export type DeleteEarningGroupMutationOptions = Apollo.BaseMutationOptions<DeleteEarningGroupMutation, DeleteEarningGroupMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {

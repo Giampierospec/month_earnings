@@ -7,6 +7,11 @@ const earnings = (state = {} as EarningsPaginator, action: any) => {
       return action.payload ? action.payload : {}
     case types.CREATE_EARNINGS:
       return { ...state, items: [action.payload, ...state.items] }
+    case types.DELETE_EARNINGS:
+      return {
+        ...state,
+        items: [...state.items.filter((x) => x.id !== action.payload)],
+      }
     default:
       return state
   }

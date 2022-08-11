@@ -209,7 +209,18 @@ export const deleteEarningGroup = async ({ id, user }: DeleteEarningProps) => {
 			'You are not an admin or super admin to delete this earning'
 		)
 	}
-
+	const earnings = await Earnings.findAll({
+		where: {
+			earning_group_id: id,
+		},
+	})
+	earnings.forEach((earning) => {
+		EarningConcepts.destroy({
+			where: {
+				earnings_id: earning.id,
+			},
+		})
+	})
 	await Earnings.destroy({
 		where: {
 			earning_group_id: id,
