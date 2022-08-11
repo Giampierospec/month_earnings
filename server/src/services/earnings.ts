@@ -3,7 +3,8 @@ import { ModifiedRequest } from '../middleware/auth'
 import EarningConcepts from '../models/EarningConcepts'
 import EarningGroup from '../models/EarningGroup'
 import Earnings from '../models/Earnings'
-import { generatePagination } from '../utils/helpers'
+import User from '../models/User'
+import { generatePagination, UserRoles } from '../utils/helpers'
 
 export enum CurrencyEnum {
 	DOP = 'DOP',
@@ -171,4 +172,54 @@ export const addToEarningGroup = async ({
 		id: earningGroup.id,
 		name: earningGroup.name,
 	}
+}
+
+interface DeleteEarningProps {
+	id: number
+	user: User
+}
+export const deleteEarning = async ({ id, user }: DeleteEarningProps) => {
+	if (
+		user.roleId !== UserRoles.ADMIN &&
+		user.roleId !== UserRoles.SUPER_ADMIN
+	) {
+		throw new Error(
+			'You are not an admin or super admin to delete this earning'
+		)
+	}
+	await EarningConcepts.destroy({
+		where: {
+			earnings_id: id,
+		},
+	})
+	await Earnings.destroy({
+		where: {
+			id,
+		},
+		cascade: true,
+	})
+	return true
+}
+export const deleteEarningGroup = async ({ id, user }: DeleteEarningProps) => {
+	if (
+		user.roleId !== UserRoles.ADMIN &&
+		user.roleId !== UserRoles.SUPER_ADMIN
+	) {
+		throw new Error(
+			'You are not an admin or super admin to delete this earning'
+		)
+	}
+
+	await Earnings.destroy({
+		where: {
+			earning_group_id: id,
+		},
+		cascade: true,
+	})
+	await EarningGroup.destroy({
+		where: {
+			id,
+		},
+	})
+	return true
 }
