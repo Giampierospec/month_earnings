@@ -18,6 +18,12 @@ interface PageableList<T> {
 	currentPage: number
 	items: T[]
 }
+
+export enum UserRoles {
+	SUPER_ADMIN = 1,
+	ADMIN = 2,
+	NORMAL = 3,
+}
 export const generatePagination = <T>(
 	total: number,
 	first: number,

@@ -17,10 +17,10 @@ export const earningQueries = gql`
 export const earningQueryResolvers = {
 	getEarnings: async (source: any, args: any, context: any) => {
 		// checkIfLoggedIn(context.req)
-		return await getEarnings(context?.req?.userId, { ...args })
+		return await getEarnings(context?.req?.user?.id, { ...args })
 	},
 	getEarningGroups: async (source: any, args: any, context: any) => {
 		// checkIfLoggedIn(context.req)
-		return await getEarningGroups(context?.req?.userId, { ...args })
+		return await getEarningGroups(context?.req?.user?.id, { ...args })
 	},
 }

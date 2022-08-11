@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+import User from '../models/User'
 
 export interface ModifiedRequest extends Request {
 	isAuth?: boolean
-	userId?: Number
+	user?: User | null
 }
-export const isLoggedIn = (
+export const isLoggedIn = async (
 	req: ModifiedRequest,
 	res: Response,
 	next: NextFunction
@@ -26,7 +27,11 @@ export const isLoggedIn = (
 		req.isAuth = false
 		return next()
 	}
-	req.userId = verify.id
+	req.user = await User.findOne({
+		where: {
+			id: verify.id,
+		},
+	})
 	req.isAuth = true
 	next()
 }

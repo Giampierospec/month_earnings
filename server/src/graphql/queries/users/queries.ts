@@ -13,7 +13,7 @@ export const userQueryResolvers = {
 		// checkIfLoggedIn(context.req)
 		return await User.findOne({
 			where: {
-				id: context.req.userId,
+				id: context.req.user?.id,
 			},
 		})
 	},
