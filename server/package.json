@@ -9,6 +9,7 @@
 		"migrate:cli": "ts-node src/db/migrator/run-cli.ts",
 		"migrate:down": "ts-node src/db/migrator/down.ts",
 		"dev": "nodemon index.ts",
+		"postinstall": "npm run migrate:up",
 		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
