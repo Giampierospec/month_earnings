@@ -5,11 +5,10 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node dist/index.js",
-		"migrate:up": "ts-node src/db/migrator/up.ts",
-		"migrate:cli": "ts-node src/db/migrator/run-cli.ts",
-		"migrate:down": "ts-node src/db/migrator/down.ts",
+		"migrator": "ts-node src/db/migrator/migrator-cli.ts",
+		"seeder": "ts-node src/db/migrator/seeder-cli.ts",
 		"dev": "nodemon index.ts",
-		"postinstall": "npm run migrate:up",
+		"postinstall": "npm run migrator up && npm run seeder up",
 		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
