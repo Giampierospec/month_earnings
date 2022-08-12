@@ -22,8 +22,20 @@ export const up: Migration = ({ context: queryInterface }) =>
 			type: DataTypes.DOUBLE,
 		},
 		month: {
-			type: DataTypes.STRING,
-			allowNull: false,
+			type: DataTypes.ENUM(
+				'January',
+				'February',
+				'March',
+				'April',
+				'May',
+				'June',
+				'July',
+				'August',
+				'September',
+				'October',
+				'November',
+				'December'
+			),
 		},
 		year: {
 			type: DataTypes.INTEGER,

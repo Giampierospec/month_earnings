@@ -3,7 +3,5 @@ if (process.env.NODE_ENV !== 'production') {
 	dotenv.config()
 }
 import '../connection'
-import { umzug } from '../connection'
-;(async () => {
-	umzug.down()
-})()
+import { migrator } from '../connection'
+migrator.runAsCLI()
