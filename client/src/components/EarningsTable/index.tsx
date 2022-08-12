@@ -13,19 +13,42 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
   VStack,
 } from '@chakra-ui/react'
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import { deleteEarningAction } from '../../actions'
 import { Earnings } from '../../generated/graphql'
+import { Actions, Reducers } from '../../interfaces/general'
+import { errorsConvert, UserRoles } from '../../utils/helpers'
 import PrimaryButton from '../PrimaryButton'
 
 interface EarningTableProps {
   earnings: Earnings[]
 }
-const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
+const EarningsTable: React.FC<
+  Partial<EarningTableProps & Actions & Reducers>
+> = ({ earnings, auth, deleteEarningAction }) => {
   const { earningGroupId } = useParams()
+  const toast = useToast()
+  const onDeleteEarning = async (id: number) => {
+    try {
+      await deleteEarningAction({
+        deleteEarningId: id,
+      })
+    } catch (error) {
+      toast({
+        title: 'An error has ocurred',
+        description: errorsConvert(error),
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+      })
+    }
+  }
   return (
     <Flex
       direction="column"
@@ -62,6 +85,7 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
                   <Th>Spent in Month</Th>
                   <Th>Rest in Month</Th>
                   <Th>Concepts</Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -81,6 +105,7 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
                         earning.month_earnings - earning.spent_in_month
                       )?.toLocaleString()}
                     </Td>
+
                     <Td>
                       <VStack spacing={4} align="flex-start">
                         {earning?.concepts?.map((concept, i) => (
@@ -97,6 +122,17 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
                           </HStack>
                         ))}
                       </VStack>
+                    </Td>
+                    <Td>
+                      {(auth?.role === UserRoles.SUPER_ADMIN ||
+                        auth?.role === UserRoles.ADMIN) && (
+                        <PrimaryButton
+                          bg="red"
+                          onClick={() => onDeleteEarning(earning?.id)}
+                        >
+                          delete
+                        </PrimaryButton>
+                      )}
                     </Td>
                   </Tr>
                 ))}
@@ -173,6 +209,15 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
                       </HStack>
                     ))}
                   </VStack>
+                  {(auth?.role === UserRoles.SUPER_ADMIN ||
+                    auth?.role === UserRoles.ADMIN) && (
+                    <PrimaryButton
+                      bg="red"
+                      onClick={() => onDeleteEarning(earning?.id)}
+                    >
+                      delete
+                    </PrimaryButton>
+                  )}
                 </Box>
               ))}
             </VStack>
@@ -185,4 +230,5 @@ const EarningsTable: React.FC<Partial<EarningTableProps>> = ({ earnings }) => {
   )
 }
 
-export default EarningsTable
+const mapStateToProps = ({ auth }) => ({ auth })
+export default connect(mapStateToProps, { deleteEarningAction })(EarningsTable)
