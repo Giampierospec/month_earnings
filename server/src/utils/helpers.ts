@@ -1,8 +1,12 @@
 import jwt from 'jsonwebtoken'
-export const generateToken = (id: number, email: string) => {
+export const generateToken = (
+	id: number,
+	email: string,
+	expire: string = '1d'
+) => {
 	try {
 		const token = jwt.sign({ id, email }, process.env.JWT_SECRET || '', {
-			expiresIn: '1d',
+			expiresIn: expire,
 		})
 		return {
 			token,
@@ -10,6 +14,13 @@ export const generateToken = (id: number, email: string) => {
 		}
 	} catch (error) {
 		throw error
+	}
+}
+export const verifyToken = (token: string) => {
+	try {
+		return jwt.verify(token, process.env.JWT_SECRET || '') as any
+	} catch (error) {
+		return null
 	}
 }
 interface PageableList<T> {

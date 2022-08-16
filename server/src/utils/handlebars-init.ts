@@ -7,7 +7,7 @@ interface mailOptions extends MailOptions {
 	context?: any
 }
 export const sendMail = async ({
-	from = 'giampi_12@hotmail.com',
+	from = process.env.FROM_EMAIL,
 	...rest
 }: mailOptions) => {
 	const transporter = await nodemailer.createTransport({
@@ -32,5 +32,5 @@ export const sendMail = async ({
 		})
 	)
 	const info = await transporter.sendMail({ from, ...rest })
-	console.log(nodemailer.getTestMessageUrl(info))
+	return !!info.messageId
 }
