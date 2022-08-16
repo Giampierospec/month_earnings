@@ -77,6 +77,9 @@ User.init(
 User.beforeCreate(async (user) => {
 	user.password = await genPassword(user.password)
 })
+User.beforeSave(async (user) => {
+	user.password = await genPassword(user.password)
+})
 User.beforeUpdate(async (user) => {
 	user.password = await genPassword(user.password)
 })

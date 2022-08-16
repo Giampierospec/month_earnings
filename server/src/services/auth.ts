@@ -5,6 +5,7 @@ import { ModifiedRequest } from '../middleware/auth'
 import { generateToken, UserRoles, verifyToken } from '../utils/helpers'
 import { sendMail } from '../utils/handlebars-init'
 import ResetPassword from '../models/ResetPassword'
+import { userInfo } from 'os'
 
 interface LoginArgs {
 	email: string
@@ -110,6 +111,14 @@ export const resetPasswordService = async ({
 		throw new Error('This token is not available')
 	}
 	const payload = verifyToken(token)
+	const user = await User.findOne({
+		where: {
+			id: payload.id,
+		},
+	})
+	if (!user) {
+		throw new Error('User not found')
+	}
 	if (!payload) {
 		throw new Error('Token is not valid')
 	}
@@ -118,16 +127,9 @@ export const resetPasswordService = async ({
 			userId: payload.id,
 		},
 	})
-	await User.update(
-		{
-			password,
-		},
-		{
-			where: {
-				id: payload.id,
-			},
-		}
-	)
+	user.password = password
+	await user.save()
+
 	return true
 }
 
