@@ -27,6 +27,7 @@ app.use(cookieParser())
 app.use(cors())
 app.use(bodyParser.json())
 app.use(isLoggedIn)
+app.use(express.static(path.resolve(__dirname, 'public')))
 ;(async () => {
 	await startApolloServer(app, TypeDefs, Resolvers)
 })()

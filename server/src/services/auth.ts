@@ -3,6 +3,7 @@ import { comparePassword } from '../utils/password'
 import jwt from 'jsonwebtoken'
 import { ModifiedRequest } from '../middleware/auth'
 import { generateToken, UserRoles } from '../utils/helpers'
+import { sendMail } from '../utils/handlebars-init'
 
 interface LoginArgs {
 	email: string
@@ -39,6 +40,15 @@ export const createUser = async (userInput: CreateUserProps): Promise<User> => {
 	if (exists) {
 		throw new Error(`User with email ${userInput.email} already exists`)
 	}
+	await sendMail({
+		to: userInput.email,
+		subject: 'Created user',
+		context: {
+			name: `${userInput?.firstName} ${userInput?.lastName}`,
+		},
+		template: 'register',
+	})
+
 	return await User.create({ ...userInput, roleId: UserRoles.NORMAL })
 }
 export const checkIfLoggedIn = (req: ModifiedRequest) => {

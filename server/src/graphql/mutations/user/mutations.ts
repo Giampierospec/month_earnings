@@ -27,7 +27,7 @@ export const userMutationsResolvers = {
 		})
 	},
 	createUser: async (source: any, args: any, context: any) => {
-		const user = (await createUser(args.input)) as any
+		const user = await createUser(args.input)
 		const { token } = generateToken(user.id, user.email)
 		context.res.setHeader('Set-Cookie', `Earning-Auth-Token=${token}`)
 		return user
