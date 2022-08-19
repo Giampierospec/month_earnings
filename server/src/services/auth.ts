@@ -1,11 +1,14 @@
 import User from '../models/User'
 import { comparePassword } from '../utils/password'
-import jwt from 'jsonwebtoken'
 import { ModifiedRequest } from '../middleware/auth'
-import { generateToken, UserRoles, verifyToken } from '../utils/helpers'
+import {
+	generateToken,
+	mailStyles,
+	UserRoles,
+	verifyToken,
+} from '../utils/helpers'
 import { sendMail } from '../utils/handlebars-init'
 import ResetPassword from '../models/ResetPassword'
-import { userInfo } from 'os'
 
 interface LoginArgs {
 	email: string
@@ -48,6 +51,7 @@ export const createUser = async (userInput: CreateUserProps): Promise<User> => {
 		context: {
 			name: `${userInput?.firstName} ${userInput?.lastName}`,
 			frontend_url: process.env.FRONTEND_URL,
+			mail: mailStyles?.toString('utf-8'),
 		},
 		template: 'register',
 	})
@@ -91,6 +95,7 @@ export const resetPasswordEmail = async (email: string) => {
 			name: `${user.firstName} ${user.lastName}`,
 			frontend_url: process.env.FRONTEND_URL,
 			token,
+			mail: mailStyles?.toString('utf-8'),
 		},
 	})
 }

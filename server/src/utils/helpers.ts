@@ -1,4 +1,6 @@
+import { readFileSync } from 'fs'
 import jwt from 'jsonwebtoken'
+import path from 'path'
 export const generateToken = (
 	id: number,
 	email: string,
@@ -49,3 +51,6 @@ export const generatePagination = <T>(
 		items: items.slice((page - 1) * first, page * first),
 	}
 }
+export const mailStyles = readFileSync(
+	path.join(process.cwd(), 'public', 'css', 'output.css')
+)

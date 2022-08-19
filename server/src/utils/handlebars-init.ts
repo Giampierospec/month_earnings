@@ -2,6 +2,7 @@ import hbs from 'nodemailer-express-handlebars'
 import nodemailer from 'nodemailer'
 import path from 'path'
 import { MailOptions } from 'nodemailer/lib/json-transport'
+import { hbs as hbsInstance } from '../../index'
 interface mailOptions extends MailOptions {
 	template?: string
 	context?: any
@@ -21,13 +22,9 @@ export const sendMail = async ({
 	transporter.use(
 		'compile',
 		hbs({
-			viewEngine: {
-				extname: '.hbs',
-				layoutsDir: path.resolve(process.cwd(), 'public', 'layouts'),
-				defaultLayout: 'main',
-			},
+			viewEngine: hbsInstance,
 
-			viewPath: path.resolve(process.cwd(), 'public', 'templates'),
+			viewPath: path.join(process.cwd(), 'src', 'views', 'templates'),
 			extName: '.hbs',
 		})
 	)

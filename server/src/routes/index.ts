@@ -1,10 +1,12 @@
 import { Router } from 'express'
-import { getEarnings } from '../controllers/earningController'
+import { register, resetPassword } from '../controllers/templatesController'
 
 const router = Router()
 /**
- * Earning routes
+ * TemplateRoutes
  */
-router.route('/earnings').get(getEarnings)
+router.route('/reset-password').get(resetPassword)
+
+router.route('/register').get(register)
 
 export default router
