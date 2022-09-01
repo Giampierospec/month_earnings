@@ -8,7 +8,6 @@
 		"migrator": "ts-node src/db/migrator/migrator-cli.ts",
 		"seeder": "ts-node src/db/migrator/seeder-cli.ts",
 		"dev": "nodemon index.ts",
-		"postinstall": "npm run migrator up && npm run seeder up",
 		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -40,9 +39,6 @@
 		"pg-hstore": "^2.3.4",
 		"sequelize": "^6.21.3",
 		"umzug": "^3.1.1"
-	},
-	"engines": {
-		"node": "^14.17.1"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.0",

@@ -44,12 +44,12 @@ app.use('/', router)
 })()
 if (process.env.NODE_ENV === 'production') {
 	// Express will serve Production Assets
-	app.use(express.static(path.resolve(__dirname, '../client', 'build')))
+	app.use(express.static(path.join('..', 'client', 'build')))
 
 	//Express will serve up the index.html
 
 	app.get('*', (req, res) => {
-		res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'))
+		res.sendFile(path.join('..', 'client', 'build', 'index.html'))
 	})
 }
 app.listen(port, () => {
