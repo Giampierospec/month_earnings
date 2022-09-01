@@ -1,5 +1,4 @@
 import { gql } from 'apollo-server-core'
-import * as graphql from 'graphql'
 
 const createUserInput = gql`
 	"Input for creating an user"
@@ -10,6 +9,19 @@ const createUserInput = gql`
 		password: String
 	}
 `
+const sendResetPasswordEmailInput = gql`
+	"Input for reset password email"
+	input SendResetPasswordEmailInput {
+		email: String
+	}
+`
+const resetPasswordInput = gql`
+	"Input for resetPassword"
+	input ResetPasswordInput {
+		password: String
+		token: String
+	}
+`
 const loginInput = gql`
 	"Input for login mutation"
 	input LoginInput {
@@ -17,4 +29,9 @@ const loginInput = gql`
 		password: String
 	}
 `
-export default [createUserInput, loginInput]
+export default [
+	createUserInput,
+	loginInput,
+	resetPasswordInput,
+	sendResetPasswordEmailInput,
+]

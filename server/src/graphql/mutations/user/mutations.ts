@@ -1,6 +1,11 @@
 import { gql } from 'apollo-server-core'
 import User from '../../../models/User'
-import { createUser, login } from '../../../services/auth'
+import {
+	createUser,
+	login,
+	resetPasswordEmail,
+	resetPasswordService,
+} from '../../../services/auth'
 import { generateToken } from '../../../utils/helpers'
 export const userMutations = gql`
 	type Mutation {
@@ -8,6 +13,8 @@ export const userMutations = gql`
 		login(input: LoginInput!): User @auth(checkIfAlreadyLoggedIn: true)
 		"Creates a new user"
 		createUser(input: CreateUserInput!): User
+		sendResetPasswordEmail(input: SendResetPasswordEmailInput!): Boolean!
+		resetPassword(input: ResetPasswordInput!): Boolean!
 		logout: User @auth
 	}
 `
@@ -27,12 +34,19 @@ export const userMutationsResolvers = {
 		})
 	},
 	createUser: async (source: any, args: any, context: any) => {
-		const user = (await createUser(args.input)) as any
+		const user = await createUser(args.input)
 		const { token } = generateToken(user.id, user.email)
 		context.res.setHeader('Set-Cookie', `Earning-Auth-Token=${token}`)
 		return user
 	},
 	logout: async (_: any, args: any, context: any) => {
 		context.res.clearCookie('Earning-Auth-Token')
+	},
+	sendResetPasswordEmail: async (_: any, args: any, context: any) => {
+		const { email } = args.input
+		return await resetPasswordEmail(email)
+	},
+	resetPassword: async (_: any, args: any, context: any) => {
+		return await resetPasswordService(args.input)
 	},
 }

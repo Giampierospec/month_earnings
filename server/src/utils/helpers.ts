@@ -1,8 +1,14 @@
+import { readFileSync } from 'fs'
 import jwt from 'jsonwebtoken'
-export const generateToken = (id: number, email: string) => {
+import path from 'path'
+export const generateToken = (
+	id: number,
+	email: string,
+	expire: string = '1d'
+) => {
 	try {
 		const token = jwt.sign({ id, email }, process.env.JWT_SECRET || '', {
-			expiresIn: '1d',
+			expiresIn: expire,
 		})
 		return {
 			token,
@@ -10,6 +16,13 @@ export const generateToken = (id: number, email: string) => {
 		}
 	} catch (error) {
 		throw error
+	}
+}
+export const verifyToken = (token: string) => {
+	try {
+		return jwt.verify(token, process.env.JWT_SECRET || '') as any
+	} catch (error) {
+		return null
 	}
 }
 interface PageableList<T> {
@@ -38,3 +51,6 @@ export const generatePagination = <T>(
 		items: items.slice((page - 1) * first, page * first),
 	}
 }
+export const mailStyles = readFileSync(
+	path.join(process.cwd(), 'public', 'css', 'output.css')
+)
