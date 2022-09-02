@@ -9,7 +9,10 @@ import { LoginInput } from '../../generated/graphql'
 import { Actions, Reducers } from '../../interfaces/general'
 import { errorsConvert } from '../../utils/helpers'
 
-const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
+const LoginModule: React.FC<Partial<Reducers & Actions>> = ({
+  auth,
+  loginUser,
+}) => {
   const navigate = useNavigate()
   const location = useLocation()
   const from = (location.state as any)?.from?.pathname || '/'
@@ -47,4 +50,4 @@ const Login: React.FC<Partial<Reducers & Actions>> = ({ auth, loginUser }) => {
   return <LoginCard submit={handleSubmit} />
 }
 const mapStateToProps = ({ auth }) => ({ auth })
-export default connect(mapStateToProps, { loginUser })(Login)
+export default connect(mapStateToProps, { loginUser })(LoginModule)

@@ -6,7 +6,7 @@ import CreateNewEarning from '../modules/CreateNewEarning'
 import CreateNewUser from '../modules/CreateNewUser'
 import EarningGroupList from '../modules/EarningGroupList'
 import EarningsList from '../modules/EarningsList'
-// import Login from '../modules/Login'
+import LoginModule from '../modules/LoginModule'
 
 const RouteSetup: React.FC = () => {
   return (
@@ -20,7 +20,7 @@ const RouteSetup: React.FC = () => {
           element={<CreateNewEarning />}
         />
       </Route>
-      {/* <Route path="/login" element={<Login />} /> */}
+      <Route path="/login" element={<LoginModule />} />
       <Route path="/new-user" element={<CreateNewUser />} />
     </Routes>
   )
