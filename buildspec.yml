@@ -17,4 +17,4 @@ artifacts:
     - client/package-lock.json
     - client/package.json
     - server/dist/**/*
-    - client/**/**/*
+    - client/**/*
