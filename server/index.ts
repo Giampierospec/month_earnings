@@ -21,7 +21,7 @@ export const hbs = create({
 	extname: 'hbs',
 })
 
-const port = process.env.PORT
+const port = process.env.PORT || 4000
 if (process.env.NODE_ENV === 'product')
 	app.use(
 		cookieSession({
