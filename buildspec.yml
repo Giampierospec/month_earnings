@@ -9,12 +9,12 @@ phases:
   build:
     commands:
       - npm run build
-  artifacts:
-    files:
-      - package.json
-      - server/package.json
-      - server/package-lock.json
-      - client/package-lock.json
-      - client/package.json
-      - 'server/dist/**/*'
-      - 'client/build/**/*'
+artifacts:
+  files:
+    - package.json
+    - server/package.json
+    - server/package-lock.json
+    - client/package-lock.json
+    - client/package.json
+    - 'server/dist/**/*'
+    - 'client/build/**/*'
