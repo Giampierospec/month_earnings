@@ -2,7 +2,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: latest
+      nodejs: 14.17.1
     commands:
       - npm install typescript -g
       - npm run install
@@ -17,4 +17,4 @@ artifacts:
     - client/package-lock.json
     - client/package.json
     - server/dist/**/*
-    - client/**/*
+    - client/build/**/*
