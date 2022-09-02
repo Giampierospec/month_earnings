@@ -18,3 +18,4 @@ artifacts:
     - client/package.json
     - server/dist/**/*
     - client/build/**/*
+  discard-paths: yes
