@@ -5,17 +5,17 @@ phases:
       nodejs: latest
     commands:
       - npm install typescript -g
-      - npm run install
+      - npm install
+      - npm install --prefix ./client
   build:
     commands:
       - npm run build
 artifacts:
   files:
     - package.json
-    - server/package.json
-    - server/package-lock.json
+    - package-lock.json
     - client/package-lock.json
     - client/package.json
-    - server/dist/**/*
+    - dist/**/*
     - client/build/**/*
   discard-paths: yes

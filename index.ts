@@ -22,7 +22,7 @@ export const hbs = create({
 })
 
 const port = process.env.PORT || 4000
-if (process.env.NODE_ENV === 'product')
+if (process.env.NODE_ENV === 'production')
 	app.use(
 		cookieSession({
 			keys: [process.env.SECRET],
@@ -44,12 +44,12 @@ app.use('/', router)
 })()
 if (process.env.NODE_ENV === 'production') {
 	// Express will serve Production Assets
-	app.use(express.static(path.join('..', 'client', 'build')))
+	app.use(express.static(path.join(__dirname, 'client', 'build')))
 
 	//Express will serve up the index.html
 
 	app.get('*', (req, res) => {
-		res.sendFile(path.join('..', 'client', 'build', 'index.html'))
+		res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
 	})
 }
 app.listen(port, () => {
