@@ -10,7 +10,9 @@
 		"dev:server": "nodemon index.ts",
 		"dev:client": "npm start --prefix ./client",
 		"dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-		"build": "tsc && npm run build --prefix ./client",
+		"build:server": "tsc",
+		"build:client": "npm run build --prefix ./client",
+		"build": "npm run build:server && npm run build:client",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
