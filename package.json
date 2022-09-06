@@ -8,6 +8,7 @@
 		"migrator": "ts-node src/db/migrator/migrator-cli.ts",
 		"seeder": "ts-node src/db/migrator/seeder-cli.ts",
 		"dev:server": "nodemon index.ts",
+		"postinstall": "npm install --prefix ./client",
 		"dev:client": "npm start --prefix ./client",
 		"dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
 		"build:server": "tsc",
