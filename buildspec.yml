@@ -10,6 +10,8 @@ phases:
   build:
     commands:
       - npm run build
+  post_build:
+    - npm run start
 artifacts:
   files:
     - package.json
@@ -18,3 +20,4 @@ artifacts:
     - client/package.json
     - dist/**/*
     - client/build/**/*
+  discard-paths: yes
