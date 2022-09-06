@@ -11,7 +11,8 @@ phases:
     commands:
       - npm run build
   post_build:
-    - npm run start
+    commads:
+      - npm run start
 artifacts:
   files:
     - package.json
