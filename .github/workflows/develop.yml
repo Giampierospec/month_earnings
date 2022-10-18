@@ -19,7 +19,7 @@ on:
     branches: ['develop']
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -39,14 +39,12 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Deploy to Server
-        uses: burnett01/rsync-deployments@5.1
-        with:
-          switches: -avzr --delete
-          path: ./*
-          remote_path: /var/www/month-earnings
-          remote_host: ${{ secrets.HOST_DNS }}
-          remote_user: ubuntu
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        uses: easingthemes/ssh-deploy@v2.1.4
+        env:
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{secrets.EC2_USERNAME}}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          TARGET: ${{ secrets.TARGET_DIR}}
       - name: Install Dependencies
         run: npm install
       - name: Install Frontend Dependencies
