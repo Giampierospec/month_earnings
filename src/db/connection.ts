@@ -2,6 +2,7 @@ import path from 'path'
 import { Sequelize } from 'sequelize'
 import { Umzug, SequelizeStorage } from 'umzug'
 import dotenv from 'dotenv'
+require('ts-node/register')
 dotenv.config()
 export const sequelize = new Sequelize(
 	process.env.DB_NAME || '',
