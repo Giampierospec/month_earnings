@@ -11,7 +11,7 @@
 		"dev:server": "nodemon index.ts",
 		"dev:client": "npm start --prefix ./client",
 		"dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-		"build:server": "tsc && cp -R src/views/* /dist/src/",
+		"build:server": "tsc && cp -R src/views/* dist/src/",
 		"build:client": "npm run build --prefix ./client",
 		"build": "npm run build:server && npm run build:client",
 		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm i --prefix client && npm run build",
