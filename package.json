@@ -8,7 +8,7 @@
 		"electron": "electron .",
 		"migrator-dev": "ts-node src/db/migrator/migrator-cli.ts",
 		"seeder-dev": "ts-node src/db/migrator/seeder-cli.ts",
-		"migrator-prod": "node src/db/migrator/migrator-cli.js",
+		"migrator-prod": "node dist/src/db/migrator/migrator-cli.js",
 		"seeder-prod": "node dist/src/db/migrator/seeder-cli.js",
 		"dev:server": "nodemon index.ts",
 		"dev:client": "npm start --prefix ./client",
