@@ -6,8 +6,10 @@
 	"scripts": {
 		"start": "node dist/index.js",
 		"electron": "electron .",
-		"migrator": "ts-node src/db/migrator/migrator-cli.ts",
-		"seeder": "ts-node src/db/migrator/seeder-cli.ts",
+		"migrator-dev": "ts-node src/db/migrator/migrator-cli.ts",
+		"seeder-dev": "ts-node src/db/migrator/seeder-cli.ts",
+		"migrator-prod": "node src/db/migrator/migrator-cli.js",
+		"seeder-prod": "node dist/src/db/migrator/seeder-cli.js",
 		"dev:server": "nodemon index.ts",
 		"dev:client": "npm start --prefix ./client",
 		"dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
